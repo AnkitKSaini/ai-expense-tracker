@@ -1,14 +1,35 @@
+import DashboardHeader from "../Dashboard/DashboardHeader";
+import StatCard from "../Dashboard/StatCard";
+
 function Dashboard() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold">
-        Welcome to AI Expense Tracker 👋
-      </h1>
+    <>
+      <DashboardHeader />
 
-      <p className="mt-4 text-gray-600">
-        This is your dashboard.
-      </p>
-    </div>
+      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+        <StatCard
+          title="Total Balance"
+          value="₹52,400"
+        />
+
+        <StatCard
+          title="Income"
+          value="₹85,000"
+        />
+
+        <StatCard
+          title="Expenses"
+          value="₹32,600"
+        />
+
+        <StatCard
+          title="Savings"
+          value="₹52,400"
+        />
+
+      </div>
+    </>
   );
 }
 
