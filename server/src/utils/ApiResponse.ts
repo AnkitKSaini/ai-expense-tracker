@@ -5,3 +5,6 @@ export class ApiResponse<T> {
     public data?: T
   ) {}
 }
+//return res
+//.status(200)
+//.json(new ApiResponse(true, "Success", user));
