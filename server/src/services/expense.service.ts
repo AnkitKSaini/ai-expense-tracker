@@ -33,3 +33,27 @@ export const getExpensesService = async (userId: string) => {
     date: -1,
   });
 };
+
+export const updateExpenseService = async (
+  expenseId: string,
+  userId: string,
+  data: {
+    title?: string;
+    amount?: number;
+    category?: string;
+    type?: "income" | "expense";
+    date?: Date;
+  }
+) => {
+  return await Expense.findOneAndUpdate(
+    {
+      _id: expenseId,
+      user: userId,
+    },
+    data,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+};

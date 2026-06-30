@@ -6,6 +6,8 @@ import {
   getExpenseByIdService,
 } from "../services/expense.service.js";
 
+import { updateExpenseService } from "../services/expense.service.js";
+
 // =====================
 // Create Expense
 // =====================
@@ -104,5 +106,38 @@ export const getExpenseById = async (
     success: true,
     message: "Expense fetched successfully",
     data: expense,
+  });
+};
+
+export const updateExpense = async (
+  req: AuthRequest,
+  res: Response,
+): Promise<void> => {
+  if (!req.user) {
+    res.status(401).json({
+      success: false,
+      message: "Unauthorized",
+    });
+    return;
+  }
+
+  const updatedExpense = await updateExpenseService(
+    req.params.id as string,
+    req.user.id,
+    req.body,
+  );
+
+  if (!updatedExpense) {
+    res.status(404).json({
+      success: false,
+      message: "Expense not found",
+    });
+    return;
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Expense updated successfully",
+    data: updatedExpense,
   });
 };
