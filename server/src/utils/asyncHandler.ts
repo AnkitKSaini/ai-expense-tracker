@@ -2,15 +2,18 @@ import type {
   Request,
   Response,
   NextFunction,
-  RequestHandler,
 } from "express";
 
-const asyncHandler = (
-  fn: RequestHandler
-): RequestHandler => {
-  return (req: Request, res: Response, next: NextFunction) => {
+const asyncHandler =
+  <T extends Request>(
+    fn: (
+      req: T,
+      res: Response,
+      next: NextFunction
+    ) => Promise<void>
+  ) =>
+  (req: T, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };
-};
 
 export default asyncHandler;

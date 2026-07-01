@@ -5,7 +5,7 @@ import {
   createExpense,
   getExpenses,
   getExpenseById,
-  updateExpense,
+  updateExpense,deleteExpense,
 } from "../controllers/expense.controller.js";
 
 const router = Router();
@@ -18,5 +18,9 @@ router.get("/", authMiddleware, getExpenses);
 router.get("/:id", authMiddleware, getExpenseById);
 
 router.put("/:id", authMiddleware, updateExpense);
+
+router.put("/:id", authMiddleware, deleteExpense);
+
+
 
 export default router;

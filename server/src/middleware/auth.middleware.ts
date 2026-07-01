@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 
-export interface AuthRequest extends Request {
+export interface AuthRequest extends Request<{ id: string }> {
   user?: {
     id: string;
   };

@@ -1,16 +1,23 @@
-export type ExpenseType = "income" | "expense";
+import { Router } from "express";
+import authMiddleware from "../middleware/auth.middleware.js";
 
-export interface ExpenseParams {
-  id: string;
-}
+import {
+  createExpense,
+  getExpenses,
+  getExpenseById,
+  updateExpense,
+} from "../controllers/expense.controller.js";
 
-export interface CreateExpenseDto {
-  title: string;
-  amount: number;
-  category: string;
-  type: ExpenseType;
-  date?: Date;
-}
+const router = Router();
 
-export interface UpdateExpenseDto
-  extends Partial<CreateExpenseDto> {}
+
+router.post("/", authMiddleware, createExpense);
+
+router.get("/", authMiddleware, getExpenses);
+
+router.get("/:id", authMiddleware, getExpenseById);
+
+router.put("/:id", authMiddleware, updateExpense);
+
+
+export default router;

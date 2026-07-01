@@ -1,4 +1,6 @@
 import Expense from "../models/Expense.js";
+import { ApiError } from "../utils/ApiError.js";
+import { HTTP_STATUS } from "../constants/httpStatus.js";
 
 interface CreateExpenseData {
   title: string;
@@ -56,4 +58,23 @@ export const updateExpenseService = async (
       runValidators: true,
     }
   );
+};
+
+export const deleteExpenseService = async (
+  expenseId: string,
+  userId: string
+) => {
+  const expense = await Expense.findOneAndDelete({
+    _id: expenseId,
+    user: userId,
+  });
+
+  if (!expense) {
+    throw new ApiError(
+      HTTP_STATUS.NOT_FOUND,
+      "Expense not found"
+    );
+  }
+
+  return expense;
 };
