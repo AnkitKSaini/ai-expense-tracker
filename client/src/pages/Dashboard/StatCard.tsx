@@ -1,16 +1,16 @@
-type StatCardProps = {
+interface Props {
   title: string;
-  value: string;
-};
+  value: string | number;
+}
 
-function StatCard({ title, value }: StatCardProps) {
+function StatCard({ title, value }: Props) {
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-6">
-      <p className="text-gray-500">{title}</p>
+    <div className="rounded-xl bg-white p-6 shadow">
+      <h3 className="text-gray-500">{title}</h3>
 
-      <h2 className="text-3xl font-bold mt-3">
+      <p className="mt-2 text-3xl font-bold">
         {value}
-      </h2>
+      </p>
     </div>
   );
 }

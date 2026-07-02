@@ -1,27 +1,48 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import MainLayout from "../components/layout/MainLayout";
 
 import Dashboard from "../pages/Dashboard/Dashboard";
-import Expenses from "../pages/Expenses/Expenses";
+import Expenses from "../pages/Expenses/ExpensesPage";
 import Profile from "../pages/Profile/Profile";
 
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 
 import NotFound from "../pages/NotFound/NotFound";
+import PublicRoute from "./PublicRoute";
+
+import ProtectedRoute from "../routes/ProtectedRoute";
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/expenses" element={<Expenses />} />
-        <Route path="/profile" element={<Profile />} />
-      </Route>
+      
+      {/* Home */}
+      <Route
+        path="/"
+        element={
+          <Navigate
+            to={localStorage.getItem("token") ? "/dashboard" : "/login"}
+            replace
+          />
+        }
+      />
 
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+   {/* Public Routes */}
+  <Route element={<PublicRoute />}>
+    <Route path="/login" element={<Login />} />
+    <Route path="/register" element={<Register />} />
+  </Route>
+     
+       {/* Protected Routes */}
+      <Route element={<MainLayout />}>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/expenses" element={<Expenses />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+      </Route>
 
       <Route path="*" element={<NotFound />} />
     </Routes>
