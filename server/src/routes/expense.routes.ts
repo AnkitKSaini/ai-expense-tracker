@@ -19,7 +19,7 @@ router.get("/:id", authMiddleware, getExpenseById);
 
 router.put("/:id", authMiddleware, updateExpense);
 
-router.put("/:id", authMiddleware, deleteExpense);
+router.delete("/:id", authMiddleware, deleteExpense);
 
 
 

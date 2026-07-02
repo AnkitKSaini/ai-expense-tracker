@@ -1,21 +1,16 @@
-import ExpenseCard from "./ExpenseCard";
 import { useExpenses } from "../../hooks/useExpenses";
+import ExpenseCard from "./ExpenseCard";
 
+import type { Expense } from "../../types/expense";
 
-function ExpenseList() {
-  const { expenses, loading } = useExpenses();
+interface Props {
+  onEdit: (expense: Expense) => void;
+}
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+function ExpenseList({ onEdit }: Props) {
+  const { expenses, loading, deleteExpense } = useExpenses();
 
-  if (expenses.length === 0) {
-    return (
-      <p className="text-center text-gray-500">
-        No expenses found.
-      </p>
-    );
-  }
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className="space-y-4">
@@ -23,6 +18,12 @@ function ExpenseList() {
         <ExpenseCard
           key={expense._id}
           expense={expense}
+          onEdit={onEdit}
+          onDelete={async (id) => {
+            if (!confirm("Delete this expense?")) return;
+
+            await deleteExpense(id);
+          }}
         />
       ))}
     </div>

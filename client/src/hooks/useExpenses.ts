@@ -6,6 +6,7 @@ import type { Expense } from "../types/expense";
 export function useExpenses() {
   const queryClient = useQueryClient();
 
+  // Get Expenses
   const expensesQuery = useQuery<Expense[]>({
     queryKey: ["expenses"],
     queryFn: async () => {
@@ -14,12 +15,47 @@ export function useExpenses() {
     },
   });
 
+  // Create Expense
   const createMutation = useMutation({
     mutationFn: expenseService.createExpense,
 
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["expenses"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["dashboard"],
+      });
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, expense }: { id: string; expense: any }) =>
+      expenseService.updateExpense(id, expense),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["expenses"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["dashboard"],
+      });
+    },
+  });
+
+  // Delete Expense
+  const deleteMutation = useMutation({
+    mutationFn: expenseService.deleteExpense,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["expenses"],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["dashboard"],
       });
     },
   });
@@ -29,6 +65,10 @@ export function useExpenses() {
     loading: expensesQuery.isPending,
 
     createExpense: createMutation.mutateAsync,
+
+    updateExpense: updateMutation.mutateAsync,
+
+    deleteExpense: deleteMutation.mutateAsync,
 
     refetch: expensesQuery.refetch,
   };
