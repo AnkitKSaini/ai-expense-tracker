@@ -4,8 +4,20 @@ import type {
   UpdateExpenseDto,
 } from "../types/expense";
 
-export const getExpenses = async () => {
-  const { data } = await api.get("/expenses");
+export const getExpenses = async (
+  search = "",
+  category = ""
+) => {
+  const params = new URLSearchParams();
+
+  if (search) params.append("search", search);
+
+  if (category) params.append("category", category);
+
+  const { data } = await api.get(
+    `/expenses?${params.toString()}`
+  );
+
   return data;
 };
 
@@ -28,3 +40,5 @@ export const deleteExpense = async (id: string) => {
   const { data } = await api.delete(`/expenses/${id}`);
   return data;
 };
+
+

@@ -38,9 +38,22 @@ export const createExpense = asyncHandler(
 // =====================
 export const getExpenses = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const expenses = await getExpensesService(
-      req.user!.id
-    );
+
+
+
+   const {
+  search = "",
+  category = "",
+} = req.query;
+
+const expenses =
+  await getExpensesService(
+    req.user!.id,
+    search as string,
+    category as string
+  );
+
+
 
     res.status(200).json(
       new ApiResponse(

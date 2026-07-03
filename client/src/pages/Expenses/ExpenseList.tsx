@@ -4,12 +4,14 @@ import ExpenseCard from "./ExpenseCard";
 import type { Expense } from "../../types/expense";
 
 interface Props {
+  search: string;
+  category: string;
   onEdit: (expense: Expense) => void;
 }
 
-function ExpenseList({ onEdit }: Props) {
-  const { expenses, loading, deleteExpense } = useExpenses();
-
+function ExpenseList({ search, category, onEdit }: Props) {
+  const { expenses, loading, deleteExpense } = useExpenses(search, category);
+  
   if (loading) return <p>Loading...</p>;
 
   return (

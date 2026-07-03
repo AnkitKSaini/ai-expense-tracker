@@ -29,7 +29,12 @@ function ExpensesPage() {
         <CategoryFilter value={category} onChange={setCategory} />
       </div>
 
-      <ExpenseList onEdit={(expense) => setSelectedExpense(expense)} />
+      <ExpenseList
+        search={search}
+        category={category}
+        onEdit={(expense) => setSelectedExpense(expense)}
+      />
+
       <Pagination
         page={page}
         totalPages={1}
