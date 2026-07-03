@@ -1,25 +1,31 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import * as expenseService from "../services/expense.service";
-import type { Expense } from "../types/expense";
 
 export function useExpenses(
   search = "",
-  category = ""
+  category = "",
+  page = 1,
+  limit = 10
 ) {
   const queryClient = useQueryClient();
 
   // Get Expenses
- const expensesQuery = useQuery<Expense[]>({
-  queryKey: ["expenses", search, category],
+const expensesQuery = useQuery({
+  queryKey: [
+    "expenses",
+    search,
+    category,
+    page,
+    limit,
+  ],
   queryFn: async () => {
-    const response =
-      await expenseService.getExpenses(
-        search,
-        category
-      );
-
-    return response.data;
+    return await expenseService.getExpenses(
+      search,
+      category,
+      page,
+      limit
+    );
   },
 });
 
@@ -69,8 +75,15 @@ export function useExpenses(
   });
 
   return {
-    expenses: expensesQuery.data ?? [],
-    loading: expensesQuery.isPending,
+expenses: expensesQuery.data?.data?.expenses ?? [],
+
+total: expensesQuery.data?.data?.total ?? 0,
+
+page: expensesQuery.data?.data?.page ?? 1,
+
+totalPages:
+  expensesQuery.data?.data?.totalPages ?? 1,
+     loading: expensesQuery.isPending,
 
     createExpense: createMutation.mutateAsync,
 

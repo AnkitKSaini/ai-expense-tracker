@@ -6,17 +6,22 @@ import type { Expense } from "../../types/expense";
 interface Props {
   search: string;
   category: string;
+  page: number;
   onEdit: (expense: Expense) => void;
 }
 
-function ExpenseList({ search, category, onEdit }: Props) {
-  const { expenses, loading, deleteExpense } = useExpenses(search, category);
-  
+function ExpenseList({ search, category, page, onEdit }: Props) {
+  const { expenses, loading, deleteExpense } = useExpenses(
+    search,
+    category,
+    page,
+  );
+
   if (loading) return <p>Loading...</p>;
 
   return (
     <div className="space-y-4">
-      {expenses.map((expense) => (
+      {expenses.map((expense: Expense) => (
         <ExpenseCard
           key={expense._id}
           expense={expense}

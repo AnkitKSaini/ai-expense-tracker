@@ -44,14 +44,18 @@ export const getExpenses = asyncHandler(
    const {
   search = "",
   category = "",
+  page = "1",
+  limit = "10",
 } = req.query;
 
 const expenses =
-  await getExpensesService(
-    req.user!.id,
-    search as string,
-    category as string
-  );
+ await getExpensesService(
+  req.user!.id,
+  search as string,
+  category as string,
+  Number(page),
+  Number(limit)
+);
 
 
 

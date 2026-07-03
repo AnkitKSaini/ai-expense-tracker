@@ -12,7 +12,7 @@ interface CreateExpenseData {
 
 export const createExpenseService = async (
   data: CreateExpenseData,
-  userId: string,
+  userId: string
 ) => {
   return await Expense.create({
     ...data,
@@ -22,7 +22,7 @@ export const createExpenseService = async (
 
 export const getExpenseByIdService = async (
   expenseId: string,
-  userId: string,
+  userId: string
 ) => {
   return await Expense.findOne({
     _id: expenseId,
@@ -32,8 +32,10 @@ export const getExpenseByIdService = async (
 
 export const getExpensesService = async (
   userId: string,
-  search = "",
-  category = "",
+  search: string,
+  category: string,
+  page: number,
+  limit: number,
 ) => {
   const query: Record<string, unknown> = {
     user: userId,
@@ -50,9 +52,21 @@ export const getExpensesService = async (
     query.category = category;
   }
 
-  return await Expense.find(query).sort({
-    date: -1,
-  });
+  const skip = (page - 1) * limit;
+
+  const expenses = await Expense.find(query)
+    .sort({ date: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  const total = await Expense.countDocuments(query);
+
+  return {
+    expenses,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  };
 };
 
 export const updateExpenseService = async (
@@ -64,7 +78,7 @@ export const updateExpenseService = async (
     category?: string;
     type?: "income" | "expense";
     date?: Date;
-  },
+  }
 ) => {
   return await Expense.findOneAndUpdate(
     {
@@ -75,13 +89,13 @@ export const updateExpenseService = async (
     {
       new: true,
       runValidators: true,
-    },
+    }
   );
 };
 
 export const deleteExpenseService = async (
   expenseId: string,
-  userId: string,
+  userId: string
 ) => {
   const expense = await Expense.findOneAndDelete({
     _id: expenseId,
@@ -89,7 +103,10 @@ export const deleteExpenseService = async (
   });
 
   if (!expense) {
-    throw new ApiError(HTTP_STATUS.NOT_FOUND, "Expense not found");
+    throw new ApiError(
+      HTTP_STATUS.NOT_FOUND,
+      "Expense not found"
+    );
   }
 
   return expense;

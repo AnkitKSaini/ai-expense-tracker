@@ -6,13 +6,19 @@ import type {
 
 export const getExpenses = async (
   search = "",
-  category = ""
+  category = "",
+  page = 1,
+  limit = 10
 ) => {
   const params = new URLSearchParams();
 
   if (search) params.append("search", search);
 
   if (category) params.append("category", category);
+
+  params.append("page", String(page));
+
+  params.append("limit", String(limit));
 
   const { data } = await api.get(
     `/expenses?${params.toString()}`

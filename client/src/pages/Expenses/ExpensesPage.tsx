@@ -8,12 +8,14 @@ import ExpenseList from "./ExpenseList";
 import SearchBar from "../../components/common/SearchBar";
 import CategoryFilter from "../../components/common/CategoryFilter";
 import Pagination from "../../components/common/Pagination";
+import { useExpenses } from "../../hooks/useExpenses";
 
 function ExpensesPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
+  const { totalPages } = useExpenses(search, category, page);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 p-6">
@@ -32,14 +34,15 @@ function ExpensesPage() {
       <ExpenseList
         search={search}
         category={category}
+        page={page}
         onEdit={(expense) => setSelectedExpense(expense)}
       />
 
       <Pagination
         page={page}
-        totalPages={1}
+        totalPages={totalPages}
         onPrevious={() => setPage((prev) => Math.max(prev - 1, 1))}
-        onNext={() => setPage((prev) => prev + 1)}
+        onNext={() => setPage((prev) => Math.min(prev + 1, totalPages))}
       />
 
       <EditExpenseModal
