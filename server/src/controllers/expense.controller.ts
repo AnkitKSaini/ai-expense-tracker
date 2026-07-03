@@ -44,6 +44,7 @@ export const getExpenses = asyncHandler(
    const {
   search = "",
   category = "",
+  sort = "latest",
   page = "1",
   limit = "10",
 } = req.query;
@@ -53,6 +54,7 @@ const expenses =
   req.user!.id,
   search as string,
   category as string,
+  sort as string,
   Number(page),
   Number(limit)
 );

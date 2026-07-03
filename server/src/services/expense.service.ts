@@ -12,7 +12,7 @@ interface CreateExpenseData {
 
 export const createExpenseService = async (
   data: CreateExpenseData,
-  userId: string
+  userId: string,
 ) => {
   return await Expense.create({
     ...data,
@@ -22,7 +22,7 @@ export const createExpenseService = async (
 
 export const getExpenseByIdService = async (
   expenseId: string,
-  userId: string
+  userId: string,
 ) => {
   return await Expense.findOne({
     _id: expenseId,
@@ -34,6 +34,7 @@ export const getExpensesService = async (
   userId: string,
   search: string,
   category: string,
+  sort: string,
   page: number,
   limit: number,
 ) => {
@@ -53,9 +54,27 @@ export const getExpensesService = async (
   }
 
   const skip = (page - 1) * limit;
+  let sortOption = {};
 
+  switch (sort) {
+    case "oldest":
+      sortOption = { date: 1 };
+      break;
+
+    case "amountHigh":
+      sortOption = { amount: -1 };
+      break;
+
+    case "amountLow":
+      sortOption = { amount: 1 };
+      break;
+
+    default:
+      sortOption = { date: -1 };
+  }
+  
   const expenses = await Expense.find(query)
-    .sort({ date: -1 })
+    .sort(sortOption)
     .skip(skip)
     .limit(limit);
 
@@ -78,7 +97,7 @@ export const updateExpenseService = async (
     category?: string;
     type?: "income" | "expense";
     date?: Date;
-  }
+  },
 ) => {
   return await Expense.findOneAndUpdate(
     {
@@ -89,13 +108,13 @@ export const updateExpenseService = async (
     {
       new: true,
       runValidators: true,
-    }
+    },
   );
 };
 
 export const deleteExpenseService = async (
   expenseId: string,
-  userId: string
+  userId: string,
 ) => {
   const expense = await Expense.findOneAndDelete({
     _id: expenseId,
@@ -103,10 +122,7 @@ export const deleteExpenseService = async (
   });
 
   if (!expense) {
-    throw new ApiError(
-      HTTP_STATUS.NOT_FOUND,
-      "Expense not found"
-    );
+    throw new ApiError(HTTP_STATUS.NOT_FOUND, "Expense not found");
   }
 
   return expense;

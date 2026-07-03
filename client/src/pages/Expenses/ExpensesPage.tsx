@@ -9,13 +9,14 @@ import SearchBar from "../../components/common/SearchBar";
 import CategoryFilter from "../../components/common/CategoryFilter";
 import Pagination from "../../components/common/Pagination";
 import { useExpenses } from "../../hooks/useExpenses";
-
+import SortSelect from "../../components/common/SortSelect";
 function ExpensesPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
+  const [sort, setSort] = useState("latest");
   const [page, setPage] = useState(1);
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
-  const { totalPages } = useExpenses(search, category, page);
+  const { totalPages } = useExpenses(search, category,sort , page);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 p-6">
@@ -29,12 +30,18 @@ function ExpensesPage() {
         />
 
         <CategoryFilter value={category} onChange={setCategory} />
+        <SortSelect
+  value={sort}
+  onChange={setSort}
+/>
       </div>
 
       <ExpenseList
         search={search}
         category={category}
         page={page}
+        sort={sort}
+
         onEdit={(expense) => setSelectedExpense(expense)}
       />
 

@@ -5,6 +5,7 @@ import * as expenseService from "../services/expense.service";
 export function useExpenses(
   search = "",
   category = "",
+  sort = "latest",
   page = 1,
   limit = 10
 ) {
@@ -16,6 +17,7 @@ const expensesQuery = useQuery({
     "expenses",
     search,
     category,
+    sort,
     page,
     limit,
   ],
@@ -23,11 +25,13 @@ const expensesQuery = useQuery({
     return await expenseService.getExpenses(
       search,
       category,
+      sort,
       page,
       limit
     );
   },
 });
+
 
   // Create Expense
   const createMutation = useMutation({

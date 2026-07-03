@@ -7,6 +7,7 @@ import type {
 export const getExpenses = async (
   search = "",
   category = "",
+  sort = "latest",
   page = 1,
   limit = 10
 ) => {
@@ -17,6 +18,7 @@ export const getExpenses = async (
   if (category) params.append("category", category);
 
   params.append("page", String(page));
+  params.append("sort", sort);
 
   params.append("limit", String(limit));
 

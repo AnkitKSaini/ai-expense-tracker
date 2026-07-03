@@ -6,14 +6,16 @@ import type { Expense } from "../../types/expense";
 interface Props {
   search: string;
   category: string;
+  sort: string;
   page: number;
   onEdit: (expense: Expense) => void;
 }
 
-function ExpenseList({ search, category, page, onEdit }: Props) {
+function ExpenseList({ search, category, sort, page, onEdit }: Props) {
   const { expenses, loading, deleteExpense } = useExpenses(
     search,
     category,
+    sort,
     page,
   );
 
