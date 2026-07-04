@@ -14,6 +14,10 @@ import PublicRoute from "./PublicRoute";
 
 import ProtectedRoute from "../routes/ProtectedRoute";
 
+import BudgetPage from "../pages/Budget/BudgetPage";
+
+import AIPage from "../pages/AI/AIPage";
+
 function AppRoutes() {
   return (
     <Routes>
@@ -41,6 +45,8 @@ function AppRoutes() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/budget" element={<BudgetPage />} />
+          <Route path="/ai" element={<AIPage />} />
         </Route>
       </Route>
 

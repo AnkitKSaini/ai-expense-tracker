@@ -7,31 +7,23 @@ export function useExpenses(
   category = "",
   sort = "latest",
   page = 1,
-  limit = 10
+  limit = 10,
 ) {
   const queryClient = useQueryClient();
 
   // Get Expenses
-const expensesQuery = useQuery({
-  queryKey: [
-    "expenses",
-    search,
-    category,
-    sort,
-    page,
-    limit,
-  ],
-  queryFn: async () => {
-    return await expenseService.getExpenses(
-      search,
-      category,
-      sort,
-      page,
-      limit
-    );
-  },
-});
-
+  const expensesQuery = useQuery({
+    queryKey: ["expenses", search, category, sort, page, limit],
+    queryFn: async () => {
+      return await expenseService.getExpenses(
+        search,
+        category,
+        sort,
+        page,
+        limit,
+      );
+    },
+  });
 
   // Create Expense
   const createMutation = useMutation({
@@ -79,15 +71,17 @@ const expensesQuery = useQuery({
   });
 
   return {
-expenses: expensesQuery.data?.data?.expenses ?? [],
+    expenses: expensesQuery.data?.data?.expenses ?? [],
 
-total: expensesQuery.data?.data?.total ?? 0,
+    total: expensesQuery.data?.data?.total ?? 0,
 
-page: expensesQuery.data?.data?.page ?? 1,
+    page: expensesQuery.data?.data?.page ?? 1,
 
-totalPages:
-  expensesQuery.data?.data?.totalPages ?? 1,
-     loading: expensesQuery.isPending,
+    totalPages: expensesQuery.data?.data?.totalPages ?? 1,
+
+    loading: expensesQuery.isPending,
+
+    error: expensesQuery.error,
 
     createExpense: createMutation.mutateAsync,
 

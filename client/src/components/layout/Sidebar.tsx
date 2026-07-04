@@ -19,6 +19,11 @@ function Sidebar() {
         <Link className="block hover:text-blue-400" to="/profile">
           Profile
         </Link>
+
+        
+        <Link className="block hover:text-blue-400" to="/budget">
+          Budget
+        </Link>
       </nav>
     </aside>
   );

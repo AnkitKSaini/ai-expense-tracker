@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-
 import routes from "./routes/index.js";
 import notFoundMiddleware from "./middleware/notFound.middleware.js";
 import errorMiddleware from "./middleware/error.middleware.js";

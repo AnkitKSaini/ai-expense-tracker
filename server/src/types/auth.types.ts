@@ -1,3 +1,5 @@
+import type { Request } from "express";
+
 export interface JwtPayload {
   id: string;
 }
@@ -12,3 +14,10 @@ export interface LoginDto {
   email: string;
   password: string;
 }
+
+export interface AuthRequest extends Request {
+  user?: {
+    id: string;
+  };
+}
+

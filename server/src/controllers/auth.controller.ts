@@ -10,7 +10,7 @@ import {
 export const register = asyncHandler(
   async (req: Request, res: Response) => {
     const user = await registerService(req.body);
-
+     
     res
       .status(201)
       .json(
