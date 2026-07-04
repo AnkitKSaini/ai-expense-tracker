@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useBudget } from "../../hooks/useBudget";
+import toast from "react-hot-toast";
 
 function BudgetForm() {
   const today = new Date();
@@ -11,15 +12,21 @@ function BudgetForm() {
 
   const [amount, setAmount] = useState("");
 
-  const saveBudget = async () => {
+   const saveBudget = async () => {
+  try {
     await createBudget({
       amount: Number(amount),
       month: today.getMonth() + 1,
       year: today.getFullYear(),
     });
 
+    toast.success("Budget saved successfully");
+
     setAmount("");
-  };
+  } catch {
+    toast.error("Failed to save budget");
+  }
+};
 
   return (
     <div className="rounded-xl bg-white p-6 shadow">

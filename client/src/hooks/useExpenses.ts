@@ -2,6 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import * as expenseService from "../services/expense.service";
 
+import toast from "react-hot-toast";
+
 export function useExpenses(
   search = "",
   category = "",
@@ -30,6 +32,8 @@ export function useExpenses(
     mutationFn: expenseService.createExpense,
 
     onSuccess: () => {
+      toast.success("Expense added successfully");
+
       queryClient.invalidateQueries({
         queryKey: ["expenses"],
       });
@@ -38,13 +42,19 @@ export function useExpenses(
         queryKey: ["dashboard"],
       });
     },
+
+    onError: () => {
+      toast.error("Failed to add expense");
+    },
   });
 
+  // Update Expense
   const updateMutation = useMutation({
     mutationFn: ({ id, expense }: { id: string; expense: any }) =>
       expenseService.updateExpense(id, expense),
-
     onSuccess: () => {
+      toast.success("Expense updated successfully");
+
       queryClient.invalidateQueries({
         queryKey: ["expenses"],
       });
@@ -52,6 +62,10 @@ export function useExpenses(
       queryClient.invalidateQueries({
         queryKey: ["dashboard"],
       });
+    },
+
+    onError: () => {
+      toast.error("Failed to update expense");
     },
   });
 
@@ -60,6 +74,8 @@ export function useExpenses(
     mutationFn: expenseService.deleteExpense,
 
     onSuccess: () => {
+      toast.success("Expense deleted successfully");
+
       queryClient.invalidateQueries({
         queryKey: ["expenses"],
       });
@@ -67,6 +83,10 @@ export function useExpenses(
       queryClient.invalidateQueries({
         queryKey: ["dashboard"],
       });
+    },
+
+    onError: () => {
+      toast.error("Failed to delete expense");
     },
   });
 
