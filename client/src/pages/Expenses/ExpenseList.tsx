@@ -1,7 +1,7 @@
 import { useExpenses } from "../../hooks/useExpenses";
 import ExpenseCard from "./ExpenseCard";
 
-import Loader from "../../components/common/Loader";
+import SkeletonCard from "../../components/common/SkeletonCard";
 import ErrorState from "../../components/common/ErrorState";
 import EmptyState from "../../components/common/EmptyState";
 
@@ -23,7 +23,15 @@ function ExpenseList({ search, category, sort, page, onEdit }: Props) {
     page,
   );
 
-  if (loading) return <Loader />;
+ if (loading) {
+  return (
+    <div className="space-y-4">
+      <SkeletonCard />
+      <SkeletonCard />
+      <SkeletonCard />
+    </div>
+  );
+}
 
   if (error) {
     return <ErrorState message="Failed to load expenses." />;

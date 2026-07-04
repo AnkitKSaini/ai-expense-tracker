@@ -62,10 +62,7 @@ function ExpenseForm() {
       />
       <p className="text-sm text-red-500">{errors.amount?.message}</p>
 
-      <select
-        {...register("category")}
-        className="w-full rounded border p-3"
-      >
+      <select {...register("category")} className="w-full rounded border p-3">
         <option value="">Select Category</option>
         <option value="Food">Food</option>
         <option value="Transport">Transport</option>
@@ -78,10 +75,7 @@ function ExpenseForm() {
       </select>
       <p className="text-sm text-red-500">{errors.category?.message}</p>
 
-      <select
-        {...register("type")}
-        className="w-full rounded border p-3"
-      >
+      <select {...register("type")} className="w-full rounded border p-3">
         <option value="expense">Expense</option>
         <option value="income">Income</option>
       </select>
@@ -96,7 +90,7 @@ function ExpenseForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded bg-blue-600 py-3 text-white hover:bg-blue-700"
+        className="w-full rounded bg-blue-600 py-3 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {loading ? "Saving..." : "Add Expense"}
       </button>
