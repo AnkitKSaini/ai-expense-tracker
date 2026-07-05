@@ -10,13 +10,16 @@ import CategoryFilter from "../../components/common/CategoryFilter";
 import Pagination from "../../components/common/Pagination";
 import { useExpenses } from "../../hooks/useExpenses";
 import SortSelect from "../../components/common/SortSelect";
+
+import { exportCSV } from "../../services/export.service";
+
 function ExpensesPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("latest");
   const [page, setPage] = useState(1);
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
-  const { totalPages } = useExpenses(search, category,sort , page);
+  const { totalPages } = useExpenses(search, category, sort, page);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 p-6">
@@ -30,10 +33,14 @@ function ExpensesPage() {
         />
 
         <CategoryFilter value={category} onChange={setCategory} />
-        <SortSelect
-  value={sort}
-  onChange={setSort}
-/>
+        <SortSelect value={sort} onChange={setSort} />
+
+        <button
+          onClick={exportCSV}
+          className="rounded-lg bg-green-600 px-4 py-2 text-white transition hover:bg-green-700"
+        >
+          Export CSV
+        </button>
       </div>
 
       <ExpenseList
@@ -41,7 +48,6 @@ function ExpensesPage() {
         category={category}
         page={page}
         sort={sort}
-
         onEdit={(expense) => setSelectedExpense(expense)}
       />
 

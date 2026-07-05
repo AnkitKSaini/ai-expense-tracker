@@ -1,19 +1,20 @@
 import { Router } from "express";
-import authMiddleware from "../middleware/auth.middleware.js"
-import type { AuthRequest } from "../middleware/auth.middleware.js";
+
+import authMiddleware from "../middleware/auth.middleware.js";
+
+import { upload } from "../middleware/upload.middleware.js";
+
+import {
+  getProfile,
+  updateProfile,
+  changePassword,
+} from "../controllers/user.controller.js";
 
 const router = Router();
 
-router.get(
-  "/profile",
-  authMiddleware,
-  (req: AuthRequest, res) => {
-    res.json({
-      success: true,
-      message: "Protected Route",
-      user: req.user,
-    });
-  }
-);
+router.get("/profile", authMiddleware, getProfile);
 
+router.put("/profile", authMiddleware, upload.single("avatar"), updateProfile);
+
+router.put("/change-password", authMiddleware, changePassword);
 export default router;

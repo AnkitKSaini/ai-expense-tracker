@@ -21,7 +21,10 @@ const errorMiddleware = (
     return;
   }
 
-  console.error(err);
+console.error("========== ERROR ==========");
+console.error(err);
+console.error(err.stack);
+console.error("===========================");
 
   res.status(500).json({
     success: false,

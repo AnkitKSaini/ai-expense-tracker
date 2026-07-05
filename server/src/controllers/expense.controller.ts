@@ -12,6 +12,8 @@ import {
   deleteExpenseService,
 } from "../services/expense.service.js";
 
+import { Parser } from "json2csv";
+
 // =====================
 // Create Expense
 // =====================
@@ -126,5 +128,34 @@ export const deleteExpense = asyncHandler(
         "Expense deleted successfully"
       )
     );
+  }
+);
+
+export const exportExpensesCSV = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const expenses = await Expense.find({
+      user: req.user!.id,
+    }).lean();
+
+    const parser = new Parser({
+      fields: [
+        "title",
+        "amount",
+        "category",
+        "type",
+        "date",
+      ],
+    });
+
+    const csv = parser.parse(expenses);
+
+    res.header(
+      "Content-Type",
+      "text/csv"
+    );
+
+    res.attachment("expenses.csv");
+
+    res.send(csv);
   }
 );
