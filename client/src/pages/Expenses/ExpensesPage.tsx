@@ -11,7 +11,7 @@ import Pagination from "../../components/common/Pagination";
 import { useExpenses } from "../../hooks/useExpenses";
 import SortSelect from "../../components/common/SortSelect";
 
-import { exportCSV } from "../../services/export.service";
+import { exportCSV, exportPDF } from "../../services/export.service";
 
 function ExpensesPage() {
   const [search, setSearch] = useState("");
@@ -39,7 +39,14 @@ function ExpensesPage() {
           onClick={exportCSV}
           className="rounded-lg bg-green-600 px-4 py-2 text-white transition hover:bg-green-700"
         >
-          Export CSV
+          📊 Export CSV
+        </button>
+
+        <button
+          onClick={exportPDF}
+          className="rounded-lg bg-red-600 px-4 py-2 text-white"
+        >
+          📄 Export PDF
         </button>
       </div>
 
