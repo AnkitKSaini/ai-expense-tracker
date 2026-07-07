@@ -1,6 +1,4 @@
 import type { Response } from "express";
-import Expense from "../models/Expense.js";
-//import PDFDocument from "pdfkit";
 
 import type { AuthRequest } from "../middleware/auth.middleware.js";
 import asyncHandler from "../utils/asyncHandler.js";
@@ -14,11 +12,11 @@ import {
   deleteExpenseService,
 } from "../services/expense.service.js";
 
-//import { generateExpenseCSV } from "../utils/csv/expenseCsv.js";
-//import { generateExpensePDF } from "../utils/pdf/expensePdf.js";
+import { generateCSV } from "../export/csv.service.js";
+import Expense from "../models/Expense.js";
+import { generatePDF } from "../export/pdf/pdf.service.js";
+import User from "../models/User.js";
 
-import User from "../models/User.js"
-import { generatePDF } from "../../pdf/pdf.service.js";
 
 // =====================
 // Create Expense
@@ -106,38 +104,62 @@ export const exportExpensesCSV = asyncHandler(
     const expenses = await Expense.find({
       user: req.user!.id,
     }).lean();
-  })
+
+    const csv = generateCSV(expenses);
+
+    res.setHeader("Content-Type", "text/csv");
+
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="expenses.csv"'
+    );
+
+    res.send(csv);
+  }
+);
+
 
 export const exportExpensesPDF = asyncHandler(
   async (req: AuthRequest, res: Response) => {
+    // User
     const user = await User.findById(req.user!.id).select(
       "name email"
     );
 
     if (!user) {
-      res.status(404).json(
-        new ApiResponse(false, "User not found")
-      );
+      res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+
       return;
     }
 
+    // Expenses
     const expenses = await Expense.find({
       user: req.user!.id,
     }).lean();
 
-    const totalIncome = expenses
+    // Summary
+    const income = expenses
       .filter((e) => e.type === "income")
       .reduce((sum, e) => sum + e.amount, 0);
 
-    const totalExpense = expenses
+    const expense = expenses
       .filter((e) => e.type === "expense")
       .reduce((sum, e) => sum + e.amount, 0);
 
+    // Generate PDF
     const pdf = await generatePDF(
-      user,
+      {
+        name: user.name,
+        email: user.email,
+      },
       expenses,
-      totalIncome,
-      totalExpense
+      {
+        income,
+        expense,
+      }
     );
 
     res.setHeader(
@@ -152,7 +174,4 @@ export const exportExpensesPDF = asyncHandler(
 
     res.send(pdf);
   }
-)
-
-
-
+);

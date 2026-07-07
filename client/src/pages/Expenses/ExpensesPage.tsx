@@ -10,6 +10,8 @@ import CategoryFilter from "../../components/common/CategoryFilter";
 import Pagination from "../../components/common/Pagination";
 import { useExpenses } from "../../hooks/useExpenses";
 import SortSelect from "../../components/common/SortSelect";
+import toast from "react-hot-toast";
+
 
 import { exportCSV, exportPDF } from "../../services/export.service";
 
@@ -20,6 +22,24 @@ function ExpensesPage() {
   const [page, setPage] = useState(1);
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
   const { totalPages } = useExpenses(search, category, sort, page);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+
+const handleExportPDF = async () => {
+  try {
+    setIsDownloading(true);
+
+    await exportPDF();
+
+    toast.success("PDF exported successfully");
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to export PDF");
+  } finally {
+    setIsDownloading(false);
+  }
+};
+ 
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 p-6">
@@ -43,10 +63,15 @@ function ExpensesPage() {
         </button>
 
         <button
-          onClick={exportPDF}
-          className="rounded-lg bg-red-600 px-4 py-2 text-white"
+          onClick={handleExportPDF}
+          disabled={isDownloading}
+          className={`rounded-lg px-4 py-2 text-white transition ${
+            isDownloading
+              ? "cursor-not-allowed bg-gray-500"
+              : "bg-red-600 hover:bg-red-700"
+          }`}
         >
-          📄 Export PDF
+          {isDownloading ? "⏳ Generating PDF..." : "📄 Export PDF"}
         </button>
       </div>
 
