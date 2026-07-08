@@ -1,0 +1,162 @@
+[
+  {
+    "title": "Monthly Salary",
+    "amount": 55000,
+    "category": "Salary",
+    "type": "income",
+    "date": "2026-01-01",
+    "notes": "January Salary"
+  },
+  {
+    "title": "Grocery Shopping",
+    "amount": 1850,
+    "category": "Food",
+    "type": "expense",
+    "date": "2026-01-03",
+    "notes": "Big Bazaar"
+  },
+  {
+    "title": "Petrol",
+    "amount": 1200,
+    "category": "Transport",
+    "type": "expense",
+    "date": "2026-01-05",
+    "notes": "Fuel refill"
+  },
+  {
+    "title": "Netflix Subscription",
+    "amount": 649,
+    "category": "Entertainment",
+    "type": "expense",
+    "date": "2026-01-06",
+    "notes": "Monthly subscription"
+  },
+  {
+    "title": "Electricity Bill",
+    "amount": 2350,
+    "category": "Bills",
+    "type": "expense",
+    "date": "2026-01-08",
+    "notes": "UP Electricity"
+  },
+  {
+    "title": "Freelance Project",
+    "amount": 18000,
+    "category": "Freelance",
+    "type": "income",
+    "date": "2026-01-10",
+    "notes": "Website Development"
+  },
+  {
+    "title": "Restaurant Dinner",
+    "amount": 1450,
+    "category": "Food",
+    "type": "expense",
+    "date": "2026-01-12",
+    "notes": "Dinner with Friends"
+  },
+  {
+    "title": "Medical Checkup",
+    "amount": 2200,
+    "category": "Health",
+    "type": "expense",
+    "date": "2026-01-14",
+    "notes": "General Health Checkup"
+  },
+  {
+    "title": "Online Course",
+    "amount": 3999,
+    "category": "Education",
+    "type": "expense",
+    "date": "2026-01-16",
+    "notes": "React Advanced"
+  },
+  {
+    "title": "Stock Profit",
+    "amount": 8500,
+    "category": "Investment",
+    "type": "income",
+    "date": "2026-01-18",
+    "notes": "Swing Trading"
+  },
+  {
+    "title": "Uber Ride",
+    "amount": 320,
+    "category": "Transport",
+    "type": "expense",
+    "date": "2026-01-20",
+    "notes": "Office Travel"
+  },
+  {
+    "title": "Amazon Shopping",
+    "amount": 2999,
+    "category": "Shopping",
+    "type": "expense",
+    "date": "2026-01-21",
+    "notes": "Electronics"
+  },
+  {
+    "title": "Gym Membership",
+    "amount": 1800,
+    "category": "Health",
+    "type": "expense",
+    "date": "2026-01-22",
+    "notes": "Monthly Gym Fee"
+  },
+  {
+    "title": "Movie Night",
+    "amount": 700,
+    "category": "Entertainment",
+    "type": "expense",
+    "date": "2026-01-23",
+    "notes": "Cinema"
+  },
+  {
+    "title": "Mobile Recharge",
+    "amount": 399,
+    "category": "Bills",
+    "type": "expense",
+    "date": "2026-01-24",
+    "notes": "Jio Recharge"
+  },
+  {
+    "title": "Bonus",
+    "amount": 12000,
+    "category": "Salary",
+    "type": "income",
+    "date": "2026-01-25",
+    "notes": "Performance Bonus"
+  },
+  {
+    "title": "Train Ticket",
+    "amount": 980,
+    "category": "Travel",
+    "type": "expense",
+    "date": "2026-01-26",
+    "notes": "Delhi Trip"
+  },
+  {
+    "title": "Coffee",
+    "amount": 180,
+    "category": "Food",
+    "type": "expense",
+    "date": "2026-01-27",
+    "notes": "Cafe Coffee"
+  },
+  {
+    "title": "Savings Interest",
+    "amount": 2400,
+    "category": "Investment",
+    "type": "income",
+    "date": "2026-01-28",
+    "notes": "Bank Interest"
+  },
+  {
+    "title": "Gift Purchase",
+    "amount": 1500,
+    "category": "Shopping",
+    "type": "expense",
+    "date": "2026-01-30",
+    "notes": "Birthday Gift"
+  }
+]

@@ -31,6 +31,8 @@
 
     // 👇 Ye 2 lines add karo
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
+    
   }
 }
