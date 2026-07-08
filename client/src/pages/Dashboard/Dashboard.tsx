@@ -1,10 +1,10 @@
 import DashboardHeader from "../Dashboard/DashboardHeader";
 import StatCard from "../Dashboard/StatCard";
-import MonthlyChart from "../Dashboard/MonthlyChart";
 import RecentTransactions from "../Dashboard/RecentTransactions";
 import AIInsights from "../Dashboard/AIInsights";
 
 import { useDashboard } from "../../hooks/useDashboard";
+import DashboardAnalytics from "../Dashboard/DashboardAnalytics";
 
 function Dashboard() {
   const { data, isPending } = useDashboard();
@@ -64,9 +64,14 @@ function Dashboard() {
         <StatCard title="Transactions" value={String(data.totalTransactions)} />
       </div>
 
-      <div className="mt-6 grid lg:grid-cols-2 gap-6">
-        <MonthlyChart data={monthlyData} />
+      <div className="mt-6">
+        <DashboardAnalytics
+          monthlyData={monthlyData}
+          categoryData={data.categoryWiseExpense}
+        />
+      </div>
 
+      <div className="mt-6">
         <RecentTransactions expenses={data.recentTransactions} />
       </div>
 
