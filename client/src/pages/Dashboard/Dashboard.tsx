@@ -1,10 +1,13 @@
 import DashboardHeader from "../Dashboard/DashboardHeader";
+import { Wallet, IndianRupee, Receipt, ArrowUpDown } from "lucide-react";
 import StatCard from "../Dashboard/StatCard";
 import RecentTransactions from "../Dashboard/RecentTransactions";
 import AIInsights from "../Dashboard/AIInsights";
 
 import { useDashboard } from "../../hooks/useDashboard";
 import DashboardAnalytics from "../Dashboard/DashboardAnalytics";
+import { motion } from "framer-motion";
+import DashboardSkeleton from "../Dashboard/DashboardSkeleton";
 
 function Dashboard() {
   const { data, isPending } = useDashboard();
@@ -34,13 +37,25 @@ function Dashboard() {
     };
   });
 
-  if (isPending) {
-    return (
-      <div className="p-6">
-        <p>Loading Dashboard...</p>
-      </div>
-    );
-  }
+  const incomeExpenseData = months.map((month, index) => {
+  const item = data?.incomeExpenseTrend.find(
+    (trend) => trend.month === index + 1
+  );
+
+  return {
+    month,
+    income: item?.income ?? 0,
+    expense: item?.expense ?? 0,
+  };
+});
+
+   if (isPending) {
+  return (
+    <div className="p-6">
+      <DashboardSkeleton />
+    </div>
+  );
+}
 
   if (!data) {
     return (
@@ -51,24 +66,60 @@ function Dashboard() {
   }
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.5,
+        ease: "easeOut",
+      }}
+    >
       <DashboardHeader />
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
-        <StatCard title="Total Balance" value={`₹${data.balance}`} />
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <StatCard
+          title="Total Balance"
+          value={data.balance}
+          prefix="₹"
+          icon={Wallet}
+          iconBg="bg-blue-100 text-blue-600"
+          trend="+12%"
+          delay={0}
+        />
 
-        <StatCard title="Income" value={`₹${data.totalIncome}`} />
+        <StatCard
+          title="Income"
+          value={data.totalIncome}
+          prefix="₹"
+          icon={IndianRupee}
+          iconBg="bg-green-100 text-green-600"
+          delay={0.1}
+        />
 
-        <StatCard title="Expenses" value={`₹${data.totalExpense}`} />
+        <StatCard
+          title="Expenses"
+          value={data.totalExpense}
+          prefix="₹"
+          icon={Receipt}
+          iconBg="bg-red-100 text-red-600"
+          delay={0.2}
+        />
 
-        <StatCard title="Transactions" value={String(data.totalTransactions)} />
+        <StatCard
+          title="Transactions"
+          value={data.totalTransactions}
+          icon={ArrowUpDown}
+          iconBg="bg-purple-100 text-purple-600"
+          delay={0.3}
+        />
       </div>
 
       <div className="mt-6">
         <DashboardAnalytics
-          monthlyData={monthlyData}
-          categoryData={data.categoryWiseExpense}
-        />
+  monthlyData={monthlyData}
+  categoryData={data.categoryWiseExpense}
+  incomeExpenseData={incomeExpenseData}
+/>
       </div>
 
       <div className="mt-6">
@@ -84,7 +135,7 @@ function Dashboard() {
           monthlyExpense={data.monthlyExpense}
         />
       </div>
-    </>
+    </motion.div>
   );
 }
 

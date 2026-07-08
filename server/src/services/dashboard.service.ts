@@ -85,6 +85,96 @@ export const getDashboardSummary = async (
     },
   ]);
 
+  // Monthly Income vs Expense
+const incomeExpenseTrend = await Expense.aggregate([
+  {
+    $match: {
+      user: userObjectId,
+    },
+  },
+  {
+    $group: {
+      _id: {
+        month: {
+          $month: "$date",
+        },
+        type: "$type",
+      },
+      total: {
+        $sum: "$amount",
+      },
+    },
+  },
+  {
+    $group: {
+      _id: "$_id.month",
+      data: {
+        $push: {
+          type: "$_id.type",
+          total: "$total",
+        },
+      },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      month: "$_id",
+      income: {
+        $let: {
+          vars: {
+            incomeData: {
+              $arrayElemAt: [
+                {
+                  $filter: {
+                    input: "$data",
+                    as: "item",
+                    cond: {
+                      $eq: ["$$item.type", "income"],
+                    },
+                  },
+                },
+                0,
+              ],
+            },
+          },
+          in: {
+            $ifNull: ["$$incomeData.total", 0],
+          },
+        },
+      },
+      expense: {
+        $let: {
+          vars: {
+            expenseData: {
+              $arrayElemAt: [
+                {
+                  $filter: {
+                    input: "$data",
+                    as: "item",
+                    cond: {
+                      $eq: ["$$item.type", "expense"],
+                    },
+                  },
+                },
+                0,
+              ],
+            },
+          },
+          in: {
+            $ifNull: ["$$expenseData.total", 0],
+          },
+        },
+      },
+    },
+  },
+  {
+    $sort: {
+      month: 1,
+    },
+  },
+]);
+
   // Summary
   const totalIncome = expenses
     .filter((item) => item.type === "income")
@@ -104,5 +194,6 @@ export const getDashboardSummary = async (
   recentTransactions,
   categoryWiseExpense,
   monthlyExpense,
+  incomeExpenseTrend,
 };
 };

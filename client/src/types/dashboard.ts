@@ -10,6 +10,12 @@ export interface MonthlyExpense {
   total: number;
 }
 
+export interface IncomeExpenseTrend {
+  month: number;
+  income: number;
+  expense: number;
+}
+
 export interface DashboardSummary {
   balance: number;
   totalIncome: number;
@@ -21,4 +27,8 @@ export interface DashboardSummary {
   categoryWiseExpense: CategoryWiseExpense[];
 
   monthlyExpense: MonthlyExpense[];
+
+  incomeExpenseTrend: IncomeExpenseTrend[];
+
 }
+
