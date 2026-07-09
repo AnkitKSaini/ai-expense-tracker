@@ -1,9 +1,15 @@
 import { Router } from "express";
+import { getExpenseInsights,chatWithAI } from "../controllers/ai.controller.js";
 import authMiddleware from "../middleware/auth.middleware.js";
-import { getExpenseInsights } from "../controllers/ai.controller.js";
 
 const router = Router();
 
-router.get("/insights", authMiddleware, getExpenseInsights);
+router.post("/insights", authMiddleware, getExpenseInsights);
+
+router.post(
+  "/chat",
+  authMiddleware,
+  chatWithAI,
+);
 
 export default router;

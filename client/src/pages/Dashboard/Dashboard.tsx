@@ -9,6 +9,12 @@ import DashboardAnalytics from "../Dashboard/DashboardAnalytics";
 import { motion } from "framer-motion";
 import DashboardSkeleton from "../Dashboard/DashboardSkeleton";
 
+import HealthScoreCard from "../Dashboard/HealthScoreCard";
+
+import RiskMeterCard from "../Dashboard/RiskMeterCard";
+
+import ForecastCard from "../Dashboard/ForecastCard";
+
 function Dashboard() {
   const { data, isPending } = useDashboard();
   const months = [
@@ -38,24 +44,24 @@ function Dashboard() {
   });
 
   const incomeExpenseData = months.map((month, index) => {
-  const item = data?.incomeExpenseTrend.find(
-    (trend) => trend.month === index + 1
-  );
+    const item = data?.incomeExpenseTrend.find(
+      (trend) => trend.month === index + 1,
+    );
 
-  return {
-    month,
-    income: item?.income ?? 0,
-    expense: item?.expense ?? 0,
-  };
-});
+    return {
+      month,
+      income: item?.income ?? 0,
+      expense: item?.expense ?? 0,
+    };
+  });
 
-   if (isPending) {
-  return (
-    <div className="p-6">
-      <DashboardSkeleton />
-    </div>
-  );
-}
+  if (isPending) {
+    return (
+      <div className="p-6">
+        <DashboardSkeleton />
+      </div>
+    );
+  }
 
   if (!data) {
     return (
@@ -116,15 +122,46 @@ function Dashboard() {
 
       <div className="mt-6">
         <DashboardAnalytics
-  monthlyData={monthlyData}
-  categoryData={data.categoryWiseExpense}
-  incomeExpenseData={incomeExpenseData}
-/>
+          monthlyData={monthlyData}
+          categoryData={data.categoryWiseExpense}
+          incomeExpenseData={incomeExpenseData}
+        />
       </div>
 
       <div className="mt-6">
         <RecentTransactions expenses={data.recentTransactions} />
       </div>
+
+      <div className="mt-6">
+        <HealthScoreCard
+          score={data.financialHealth.score}
+          level={data.financialHealth.level}
+          savingRate={data.financialHealth.savingRate}
+          expenseRatio={data.financialHealth.expenseRatio}
+          budgetStatus={data.financialHealth.budgetStatus}
+          investmentReady={data.financialHealth.investmentReady}
+          emergencyFund={data.financialHealth.emergencyFund}
+          aiConfidence={data.financialHealth.aiConfidence}
+          message={data.financialHealth.message}
+        />
+      </div>
+
+      <div className="mt-6">
+        <RiskMeterCard
+          riskScore={data.financialHealth.riskScore}
+          riskLevel={data.financialHealth.riskLevel}
+        />
+      </div>
+
+      <div className="mt-6">
+  <ForecastCard
+    predictedExpense={data.prediction.predictedExpense}
+    predictedIncome={data.prediction.predictedIncome}
+    predictedSaving={data.prediction.predictedSaving}
+    confidence={data.prediction.confidence}
+    trend={data.prediction.trend}
+  />
+</div>
 
       <div className="mt-6">
         <AIInsights

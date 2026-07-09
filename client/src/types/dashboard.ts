@@ -16,6 +16,48 @@ export interface IncomeExpenseTrend {
   expense: number;
 }
 
+export interface FinancialHealth {
+  score: number;
+
+  level:
+    | "Excellent"
+    | "Good"
+    | "Average"
+    | "Poor";
+
+  savingRate: number;
+
+  expenseRatio: number;
+
+  budgetStatus:
+    | "Safe"
+    | "Warning"
+    | "Critical";
+
+  investmentReady: boolean;
+
+  emergencyFund:
+    | "Good"
+    | "Average"
+    | "Poor";
+
+  aiConfidence: number;
+
+  riskScore: number;
+
+riskLevel: "Low" | "Medium" | "High";
+
+  message: string;
+}
+
+export interface Prediction {
+  predictedExpense: number;
+  predictedIncome: number;
+  predictedSaving: number;
+  confidence: number;
+  trend: "Increasing" | "Stable" | "Decreasing";
+}
+
 export interface DashboardSummary {
   balance: number;
   totalIncome: number;
@@ -29,6 +71,10 @@ export interface DashboardSummary {
   monthlyExpense: MonthlyExpense[];
 
   incomeExpenseTrend: IncomeExpenseTrend[];
+
+  financialHealth: FinancialHealth;
+
+  prediction: Prediction;
 
 }
 

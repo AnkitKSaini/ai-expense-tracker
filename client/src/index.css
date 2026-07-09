@@ -2,6 +2,10 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --color-primary: #2563eb;
+}
+
 @keyframes shimmer {
   100% {
     transform: translateX(100%);

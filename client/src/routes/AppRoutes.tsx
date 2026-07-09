@@ -18,6 +18,8 @@ import BudgetPage from "../pages/Budget/BudgetPage";
 
 import AIPage from "../pages/AI/AIPage";
 
+import AIChat from "../pages/Chat/AIChat";
+
 function AppRoutes() {
   return (
     <Routes>
@@ -47,6 +49,7 @@ function AppRoutes() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/budget" element={<BudgetPage />} />
           <Route path="/ai" element={<AIPage />} />
+          <Route path="/ai-chat" element={<AIChat />} />
         </Route>
       </Route>
 

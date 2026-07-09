@@ -1,5 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Receipt, User, Wallet } from "lucide-react";
+import {
+  LayoutDashboard,
+  Receipt,
+  User,
+  Wallet,
+  Bot,
+} from "lucide-react";
+
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -29,6 +36,11 @@ function Sidebar({ open, onClose }: Props) {
       path: "/budget",
       icon: Wallet,
     },
+    {
+  name: "AI Assistant",
+  path: "/ai-chat",
+  icon: Bot,
+},
   ];
 
   return (
@@ -88,6 +100,8 @@ function Sidebar({ open, onClose }: Props) {
                 </Link>
               );
             })}
+
+            
           </nav>
           <div className="mt-10 border-t border-slate-700 pt-6">
             <div className="rounded-xl bg-slate-800 p-4">

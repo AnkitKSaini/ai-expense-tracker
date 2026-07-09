@@ -2,18 +2,24 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { User } from "../../types/auth";
 
+type ProfileFormData = {
+  name: string;
+  avatar?: FileList;
+};
+
 interface Props {
   open: boolean;
   user: User;
   onClose: () => void;
-  onSave: (data: { name: string; avatar?: string }) => Promise<void>;
+  onSave: (data: ProfileFormData) => Promise<void>;
 }
 
+
 function EditProfileModal({ open, user, onClose, onSave }: Props) {
-  const { register, handleSubmit, reset } = useForm({
-    defaultValues: {
+const { register, handleSubmit, reset } = useForm<ProfileFormData>({
+      defaultValues: {
       name: user.name,
-      avatar: "",
+      avatar: undefined,
     },
   });
 
@@ -23,7 +29,7 @@ function EditProfileModal({ open, user, onClose, onSave }: Props) {
   useEffect(() => {
     reset({
       name: user.name,
-      avatar: "",
+      avatar: undefined,
     });
   }, [user, reset]);
 

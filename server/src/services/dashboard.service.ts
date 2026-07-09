@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import Expense from "../models/Expense.js";
 
+import { calculateFinancialHealth } from "./financialHealth.service.js";
+import { calculatePrediction } from "./prediction.service.js";
 export const getDashboardSummary = async (
   userId: string
 ) => {
@@ -186,6 +188,14 @@ const incomeExpenseTrend = await Expense.aggregate([
 
   const balance = totalIncome - totalExpense;
 
+  const financialHealth = calculateFinancialHealth({
+  totalIncome,
+  totalExpense,
+  balance,
+});
+
+const prediction = calculatePrediction(incomeExpenseTrend);
+
   return {
   balance,
   totalIncome,
@@ -195,5 +205,7 @@ const incomeExpenseTrend = await Expense.aggregate([
   categoryWiseExpense,
   monthlyExpense,
   incomeExpenseTrend,
+  financialHealth,
+  prediction,
 };
 };
