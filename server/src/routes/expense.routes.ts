@@ -9,6 +9,7 @@ import {
   deleteExpense,
   exportExpensesCSV,
   exportExpensesPDF,
+  getCalendarExpenses,
 } from "../controllers/expense.controller.js";
 
 const router = Router();
@@ -20,6 +21,8 @@ router.get("/", authMiddleware, getExpenses);
 router.get("/export/csv", authMiddleware, exportExpensesCSV);
 
 router.get("/export/pdf", authMiddleware, exportExpensesPDF);
+
+router.get("/calendar", authMiddleware, getCalendarExpenses);
 
 router.get("/:id", authMiddleware, getExpenseById);
 

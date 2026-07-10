@@ -50,3 +50,13 @@ export const deleteExpense = async (id: string) => {
 };
 
 
+export const getCalendarExpenses = async (
+  month: number,
+  year: number,
+) => {
+  const { data } = await api.get(
+    `/expense/calendar?month=${month}&year=${year}`,
+  );
+
+  return data;
+};

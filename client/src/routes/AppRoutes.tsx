@@ -20,10 +20,11 @@ import AIPage from "../pages/AI/AIPage";
 
 import AIChat from "../pages/Chat/AIChat";
 
+import Settings from "../pages/Settings/Settings";
+
 function AppRoutes() {
   return (
     <Routes>
-      
       {/* Home */}
       <Route
         path="/"
@@ -35,13 +36,13 @@ function AppRoutes() {
         }
       />
 
-   {/* Public Routes */}
-  <Route element={<PublicRoute />}>
-    <Route path="/login" element={<Login />} />
-    <Route path="/register" element={<Register />} />
-  </Route>
-     
-       {/* Protected Routes */}
+      {/* Public Routes */}
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
+
+      {/* Protected Routes */}
       <Route element={<MainLayout />}>
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
@@ -50,6 +51,7 @@ function AppRoutes() {
           <Route path="/budget" element={<BudgetPage />} />
           <Route path="/ai" element={<AIPage />} />
           <Route path="/ai-chat" element={<AIChat />} />
+          <Route path="/settings" element={<Settings/>} />
         </Route>
       </Route>
 

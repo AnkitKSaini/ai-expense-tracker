@@ -1,11 +1,5 @@
 import type { User } from "../../types/auth";
-import {
-  Mail,
-  CalendarDays,
-  UserRound,
-  Pencil,
-  KeyRound,
-} from "lucide-react";
+import { Mail, CalendarDays, UserRound, Pencil, KeyRound } from "lucide-react";
 
 interface Props {
   user: User;
@@ -16,7 +10,7 @@ function ProfileCard({ user, onEdit }: Props) {
   return (
     <div className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-lg transition-all duration-300 dark:border-gray-700 dark:bg-gray-900">
       {/* Header */}
-      <div className="h-36 bg-gradient-to-r from-blue-600 via-cyan-500 to-indigo-600"></div>
+      <div className="h-36   from-blue-600 via-cyan-500 to-indigo-600"></div>
 
       {/* Profile */}
       <div className="-mt-16 flex flex-col items-center px-8 pb-8">
@@ -43,8 +37,7 @@ function ProfileCard({ user, onEdit }: Props) {
 
         <div className="mt-2 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
           <CalendarDays size={16} />
-          Member Since{" "}
-          {new Date(user.createdAt).toLocaleDateString()}
+          Member Since {new Date(user.createdAt).toLocaleDateString()}
         </div>
 
         {/* Buttons */}

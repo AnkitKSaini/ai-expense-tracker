@@ -6,6 +6,7 @@ import BudgetTipsCard from "./BudgetTipsCard";
 import { useBudget } from "../../hooks/useBudget";
 import { useDashboard } from "../../hooks/useDashboard";
 import Loader from "../../components/common/Loader";
+import BudgetCalendar from "./BudgetCalendar";
 
 function BudgetPage() {
   const today = new Date();
@@ -44,6 +45,8 @@ function BudgetPage() {
         budget={budget?.amount ?? 0}
         spent={dashboard?.totalExpense ?? 0}
       />
+
+      <BudgetCalendar />
     </div>
   );
 }

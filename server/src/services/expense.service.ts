@@ -127,3 +127,27 @@ export const deleteExpenseService = async (
 
   return expense;
 };
+
+
+export const getCalendarExpensesService = async (
+  userId: string,
+  month: number,
+  year: number,
+) => {
+  const startDate = new Date(year, month - 1, 1);
+
+  const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+
+  return await Expense.find({
+    user: userId,
+
+    date: {
+      $gte: startDate,
+      $lte: endDate,
+    },
+  })
+    .select("title category amount type date")
+    .sort({
+      date: 1,
+    });
+};

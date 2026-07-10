@@ -10,6 +10,7 @@ import {
   getExpenseByIdService,
   updateExpenseService,
   deleteExpenseService,
+  getCalendarExpensesService,
 } from "../services/expense.service.js";
 
 import { generateCSV } from "../export/csv.service.js";
@@ -174,4 +175,27 @@ export const exportExpensesPDF = asyncHandler(
 
     res.send(pdf);
   }
+);
+
+export const getCalendarExpenses = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const month = Number(req.query.month);
+
+    const year = Number(req.query.year);
+
+    const expenses =
+      await getCalendarExpensesService(
+        req.user!.id,
+        month,
+        year,
+      );
+
+    res.status(200).json(
+      new ApiResponse(
+        true,
+        "Calendar expenses fetched successfully",
+        expenses,
+      ),
+    );
+  },
 );

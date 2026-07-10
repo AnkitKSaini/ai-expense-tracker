@@ -6,6 +6,10 @@ import {
   Wallet,
   Bot,
 } from "lucide-react";
+import {
+  Settings,
+} from "lucide-react";
+
 
 interface Props {
   open: boolean;
@@ -41,6 +45,12 @@ function Sidebar({ open, onClose }: Props) {
   path: "/ai-chat",
   icon: Bot,
 },
+{
+  name: "Settings",
+  path: "/settings",
+  icon: Settings,
+},
+
   ];
 
   return (
