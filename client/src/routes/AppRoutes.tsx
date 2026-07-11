@@ -22,7 +22,9 @@ import AIChat from "../pages/Chat/AIChat";
 
 import Settings from "../pages/Settings/Settings";
 
-import GoalsPage from "../pages/Goals/GoalsPage"
+import GoalsPage from "../pages/Goals/GoalsPage";
+
+import InvestmentsPage from "../pages/Investments/InvestmentsPage";
 
 function AppRoutes() {
   return (
@@ -53,11 +55,9 @@ function AppRoutes() {
           <Route path="/budget" element={<BudgetPage />} />
           <Route path="/ai" element={<AIPage />} />
           <Route path="/ai-chat" element={<AIChat />} />
-          <Route path="/settings" element={<Settings/>} />
-          <Route
-  path="/goals"
-  element={<GoalsPage />}
-/>
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/goals" element={<GoalsPage />} />
+          <Route path="/investments" element={<InvestmentsPage />} />
         </Route>
       </Route>
 

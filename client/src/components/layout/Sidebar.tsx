@@ -4,7 +4,7 @@ import { LayoutDashboard, Receipt, User, Wallet, Bot } from "lucide-react";
 
 import { Settings } from "lucide-react";
 
-import { Target } from "lucide-react";
+import { Target, Landmark } from "lucide-react";
 
 interface Props {
   open: boolean;
@@ -39,6 +39,11 @@ function Sidebar({ open, onClose }: Props) {
       name: "Goals",
       path: "/goals",
       icon: Target,
+    },
+    {
+      name: "Investments",
+      path: "/investments",
+      icon: Landmark,
     },
     {
       name: "AI Assistant",
