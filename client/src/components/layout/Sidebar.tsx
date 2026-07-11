@@ -1,15 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import {
-  LayoutDashboard,
-  Receipt,
-  User,
-  Wallet,
-  Bot,
-} from "lucide-react";
-import {
-  Settings,
-} from "lucide-react";
 
+import { LayoutDashboard, Receipt, User, Wallet, Bot } from "lucide-react";
+
+import { Settings } from "lucide-react";
+
+import { Target } from "lucide-react";
 
 interface Props {
   open: boolean;
@@ -41,16 +36,20 @@ function Sidebar({ open, onClose }: Props) {
       icon: Wallet,
     },
     {
-  name: "AI Assistant",
-  path: "/ai-chat",
-  icon: Bot,
-},
-{
-  name: "Settings",
-  path: "/settings",
-  icon: Settings,
-},
-
+      name: "Goals",
+      path: "/goals",
+      icon: Target,
+    },
+    {
+      name: "AI Assistant",
+      path: "/ai-chat",
+      icon: Bot,
+    },
+    {
+      name: "Settings",
+      path: "/settings",
+      icon: Settings,
+    },
   ];
 
   return (
@@ -68,7 +67,7 @@ function Sidebar({ open, onClose }: Props) {
         className={`
     fixed inset-y-0 left-0 z-50
     w-64
-    bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900
+    bg-linear-to-b from-slate-900 via-slate-800 to-slate-900
     text-white shadow-2xl
     transform transition-transform duration-300 ease-in-out
     ${open ? "translate-x-0" : "-translate-x-full"}
@@ -110,8 +109,6 @@ function Sidebar({ open, onClose }: Props) {
                 </Link>
               );
             })}
-
-            
           </nav>
           <div className="mt-10 border-t border-slate-700 pt-6">
             <div className="rounded-xl bg-slate-800 p-4">

@@ -1,6 +1,6 @@
 import BudgetForm from "./BudgetForm";
 import BudgetProgress from "./BudgetProgress";
-import BudgetSummaryCard  from "./BudgetSummaryCard";
+import BudgetSummaryCard from "./BudgetSummaryCard";
 import BudgetTipsCard from "./BudgetTipsCard";
 
 import { useBudget } from "../../hooks/useBudget";
@@ -46,7 +46,7 @@ function BudgetPage() {
         spent={dashboard?.totalExpense ?? 0}
       />
 
-      <BudgetCalendar />
+      <BudgetCalendar budget={budget?.amount ?? 0} />
     </div>
   );
 }

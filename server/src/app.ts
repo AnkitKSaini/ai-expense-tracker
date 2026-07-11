@@ -3,6 +3,7 @@ import cors from "cors";
 import routes from "./routes/index.js";
 import notFoundMiddleware from "./middleware/notFound.middleware.js";
 import errorMiddleware from "./middleware/error.middleware.js";
+import goalRoutes from "./routes/goal.routes.js";
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.get("/", (_req, res) => {
 
 // API Routes
 app.use("/api", routes);
+
+app.use("/api/goal", goalRoutes);
 
 // 404 Middleware (Always after routes)
 app.use(notFoundMiddleware);
