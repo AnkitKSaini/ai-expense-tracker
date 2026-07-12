@@ -1,13 +1,15 @@
 import {
   ResponsiveContainer,
   BarChart,
-  Bar,
+  CartesianGrid,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
+  Bar,
   Cell,
 } from "recharts";
+
+import CustomTooltip from "./CustomTooltip";
 
 import type { Investment } from "../../types/investment";
 import { getProfitLossData } from "../../utils/investmentChartData";
@@ -16,15 +18,23 @@ interface Props {
   investments: Investment[];
 }
 
-function ProfitLossChart({
-  investments,
-}: Props) {
+function ProfitLossChart({ investments }: Props) {
   const data = getProfitLossData(investments);
 
   if (!data.length) {
     return (
       <div className="rounded-3xl border border-dashed border-gray-300 bg-white p-12 text-center shadow dark:border-gray-700 dark:bg-gray-900">
-        No investment data.
+        <div className="flex h-80 items-center justify-center">
+          <div className="text-center">
+            <div className="mb-4 text-5xl">📊</div>
+
+            <h3 className="text-xl font-bold dark:text-white">No Chart Data</h3>
+
+            <p className="mt-2 text-gray-500">
+              Add investments to visualize analytics.
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -35,63 +45,35 @@ function ProfitLossChart({
         📊 Profit vs Loss
       </h2>
 
-      <ResponsiveContainer
-        width="100%"
-        height={320}
-      >
+      <ResponsiveContainer width="100%" height={320}>
         <BarChart
           data={data}
           margin={{
-            top: 10,
+            top: 20,
             right: 20,
             left: 10,
-            bottom: 10,
+            bottom: 5,
           }}
         >
-          <CartesianGrid
-            strokeDasharray="3 3"
-            stroke="#e5e7eb"
-          />
+          <CartesianGrid strokeDasharray="4 4" opacity={0.3} />
 
           <XAxis
             dataKey="name"
+            interval={0}
             tick={{
               fontSize: 12,
             }}
-            interval={0}
-            angle={-20}
-            textAnchor="end"
           />
 
-          <YAxis
-            tickFormatter={(value) => `₹${value}`}
-          />
+          <YAxis tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}K`} />
 
-          <Tooltip
-            formatter={(value) => [
-              `₹${Number(value).toLocaleString("en-IN")}`,
-              "Profit / Loss",
-            ]}
-            contentStyle={{
-              borderRadius: 16,
-              border: "none",
-              boxShadow:
-                "0 10px 25px rgba(0,0,0,0.15)",
-            }}
-          />
+          <Tooltip content={<CustomTooltip />} />
 
-          <Bar
-            dataKey="profit"
-            radius={[10, 10, 0, 0]}
-          >
-            {data.map((entry, index) => (
+          <Bar dataKey="profit" radius={[8, 8, 0, 0]} animationDuration={1000}>
+            {data.map((entry) => (
               <Cell
-                key={index}
-                fill={
-                  entry.profit >= 0
-                    ? "#22c55e"
-                    : "#ef4444"
-                }
+                key={entry.name}
+                fill={entry.profit >= 0 ? "#22c55e" : "#ef4444"}
               />
             ))}
           </Bar>

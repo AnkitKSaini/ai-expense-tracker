@@ -57,3 +57,41 @@ export function getGrowthData(
     }),
   );
 }
+
+export function getRiskDistributionData(
+  investments: Investment[],
+) {
+  const riskMap = {
+    Low: 0,
+    Medium: 0,
+    High: 0,
+  };
+
+  investments.forEach((investment) => {
+    const risk =
+      investment.riskLevel || "Medium";
+
+    if (
+      risk === "Low" ||
+      risk === "Medium" ||
+      risk === "High"
+    ) {
+      riskMap[risk]++;
+    }
+  });
+
+  return [
+    {
+      name: "Low",
+      value: riskMap.Low,
+    },
+    {
+      name: "Medium",
+      value: riskMap.Medium,
+    },
+    {
+      name: "High",
+      value: riskMap.High,
+    },
+  ].filter((item) => item.value > 0);
+}

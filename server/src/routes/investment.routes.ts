@@ -17,44 +17,20 @@ const router = Router();
 // Portfolio
 // =========================
 
-router.get(
-  "/summary",
-  authMiddleware,
-  getPortfolioSummary,
-);
+router.get("/summary", authMiddleware, getPortfolioSummary);
 
 // =========================
 // CRUD
 // =========================
 
-router.post(
-  "/",
-  authMiddleware,
-  createInvestment,
-);
+router.post("/", authMiddleware, createInvestment);
 
-router.get(
-  "/",
-  authMiddleware,
-  getInvestments,
-);
+router.get("/", authMiddleware, getInvestments);
 
-router.get(
-  "/:id",
-  authMiddleware,
-  getInvestmentById,
-);
+router.get("/:id", authMiddleware, getInvestmentById);
 
-router.put(
-  "/:id",
-  authMiddleware,
-  updateInvestment,
-);
+router.put("/:id", authMiddleware, updateInvestment);
 
-router.delete(
-  "/:id",
-  authMiddleware,
-  deleteInvestment,
-);
+router.delete("/:id", authMiddleware, deleteInvestment);
 
 export default router;

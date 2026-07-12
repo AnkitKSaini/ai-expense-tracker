@@ -1,12 +1,20 @@
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { Download } from "lucide-react";
+
 
 import PortfolioOverview from "./PortfolioOverview";
 import PortfolioAnalytics from "./PortfolioAnalytics";
+import PortfolioInsights from "./PortfolioInsights";
+import TopPerformers from "./TopPerformers";
+import InvestmentTimeline from "./InvestmentTimeline";
 
 import AssetAllocationChart from "../charts/AllocationPie";
 import PortfolioGrowthChart from "../charts/GrowthChart";
 import ProfitLossChart from "../charts/ProfitLossChart";
+import RiskDistributionChart from "../charts/RiskDistributionChart";
+import RiskSummaryCard from "./RiskSummaryCard";
+import AIPortfolioAdvisor from "./AIPortfolioAdvisor";
 
 import InvestmentCard from "./InvestmentCard";
 import InvestmentForm from "./InvestmentForm";
@@ -19,6 +27,7 @@ import DeleteInvestmentModal from "./DeleteInvestmentModal";
 import { useInvestments } from "../../hooks/useInvestments";
 
 import type { Investment } from "../../types/investment";
+import { exportPortfolioPDF } from "../../services/investmentExport.service";
 
 function InvestmentsPage() {
   const [open, setOpen] = useState(false);
@@ -74,7 +83,7 @@ function InvestmentsPage() {
             items-center
             gap-2
             rounded-2xl
-            bg-gradient-to-r
+            bg-linear-to-r
             from-indigo-600
             to-blue-600
             px-6
@@ -92,7 +101,44 @@ function InvestmentsPage() {
           Add Investment
         </button>
       </div>
+      <div>
 
+<button
+  onClick={exportPortfolioPDF}
+  className="
+    group
+    inline-flex
+    items-center
+    justify-center
+    gap-3
+    rounded-2xl
+    bg-linear-to-r
+    from-indigo-600
+    via-violet-600
+    to-purple-600
+    px-6
+    py-3
+    font-semibold
+    text-white
+    shadow-lg
+    transition-all
+    duration-300
+    hover:-translate-y-1
+    hover:shadow-2xl
+    active:scale-95
+    dark:from-indigo-500
+    dark:via-violet-500
+    dark:to-purple-500
+  "
+>
+  <Download
+    size={20}
+    className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-110"
+  />
+
+  <span>Export Portfolio PDF</span>
+</button>
+      </div>
       {/* Portfolio Overview */}
 
       <PortfolioOverview
@@ -100,20 +146,29 @@ function InvestmentsPage() {
         loading={investmentsLoading}
       />
 
+      <PortfolioAnalytics investments={filteredInvestments} />
+
+      <PortfolioInsights investments={filteredInvestments} />
+
+      <RiskSummaryCard investments={filteredInvestments} />
+
+      <AIPortfolioAdvisor investments={filteredInvestments} />
+
+      <TopPerformers investments={filteredInvestments} />
+
+      <InvestmentTimeline investments={filteredInvestments} />
+
       <div className="grid gap-4 lg:grid-cols-2">
         <InvestmentSearch value={search} onChange={setSearch} />
 
         <InvestmentFilters value={filter} onChange={setFilter} />
       </div>
 
-      <PortfolioAnalytics investments={filteredInvestments} />
-
       <div className="grid gap-6 lg:grid-cols-2">
         <AssetAllocationChart investments={filteredInvestments} />
-
         <PortfolioGrowthChart investments={filteredInvestments} />
-
         <ProfitLossChart investments={filteredInvestments} />
+        <RiskDistributionChart investments={filteredInvestments} />
       </div>
 
       {/* Investment List */}
