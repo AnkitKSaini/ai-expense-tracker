@@ -15,6 +15,8 @@ import RiskMeterCard from "../Dashboard/RiskMeterCard";
 
 import ForecastCard from "../Dashboard/ForecastCard";
 
+import UpcomingRecurring from "../../pages/Dashboard/UpcomingRecurring";
+
 function Dashboard() {
   const { data, isPending } = useDashboard();
   const months = [
@@ -127,6 +129,7 @@ function Dashboard() {
           incomeExpenseData={incomeExpenseData}
         />
       </div>
+      <UpcomingRecurring />
 
       <div className="mt-6">
         <RecentTransactions expenses={data.recentTransactions} />

@@ -6,6 +6,8 @@ import { Settings } from "lucide-react";
 
 import { Target, Landmark } from "lucide-react";
 
+import { Repeat } from "lucide-react";
+
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -24,6 +26,11 @@ function Sidebar({ open, onClose }: Props) {
       name: "Expenses",
       path: "/expenses",
       icon: Receipt,
+    },
+    {
+      name: "Recurring",
+      path: "/recurring",
+      icon: Repeat,
     },
     {
       name: "Profile",

@@ -9,6 +9,7 @@ import aiRoutes from "./ai.routes.js";
 import analyticsRoutes from "./analytics.routes.js";
 import investmentRoutes from "./investment.routes.js";
 import investmentExportRoutes from "./investmentExport.routes.js";
+import recurringRoutes from "./recurring.routes.js";
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.use("/ai", aiRoutes);
 router.use("/analytics", analyticsRoutes);
 router.use("/investments", investmentRoutes);
 router.use("/investment/export", investmentExportRoutes);
+router.use("/recurring", recurringRoutes);
 
 export default router;

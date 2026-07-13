@@ -4,8 +4,10 @@ export interface IExpense extends Document {
   title: string;
   amount: number;
   category: string;
-  type: "income" | "expense";
+  type: "Income" | "Expense";
   date: Date;
+  notes?: string;
+
   user: Types.ObjectId;
 }
 
@@ -30,13 +32,18 @@ const expenseSchema = new Schema<IExpense>(
 
     type: {
       type: String,
-      enum: ["income", "expense"],
+      enum: ["Income", "Expense"],
       required: true,
     },
 
     date: {
       type: Date,
       default: Date.now,
+    },
+
+    notes: {
+      type: String,
+      default: "",
     },
 
     user: {
@@ -47,7 +54,7 @@ const expenseSchema = new Schema<IExpense>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export default model<IExpense>("Expense", expenseSchema);
