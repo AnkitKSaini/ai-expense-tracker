@@ -12,6 +12,9 @@ import { ReceiptText } from "lucide-react";
 
 import { BarChart3 } from "lucide-react";
 
+import { Bell } from "lucide-react";
+
+
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -70,6 +73,11 @@ function Sidebar({ open, onClose }: Props) {
       name: "Reports",
       path: "/reports",
       icon: BarChart3,
+    },
+    {
+      name: "Notifications",
+      path: "/notifications",
+      icon: Bell,
     },
     {
       name: "Settings",

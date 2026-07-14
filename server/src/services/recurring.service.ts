@@ -6,6 +6,8 @@ import { calculateNextRun } from "../utils/recurringScheduler.js";
 
 import Expense from "../models/Expense.js";
 
+import { createNotification } from "./notification.service.js";
+
 export async function createRecurring(
   req: AuthRequest,
 ) {
@@ -63,7 +65,7 @@ export async function deleteRecurring(
 }
 
 
-export async function processRecurringTransaction(
+ export async function processRecurringTransaction(
   recurringId: string,
 ) {
   const recurring =
@@ -86,21 +88,39 @@ export async function processRecurringTransaction(
 
   // Create Expense
 
-  await Expense.create({
-    title: recurring.title,
+  const transaction =
+    await Expense.create({
+      title: recurring.title,
 
-    type: recurring.type,
+      type: recurring.type,
 
-    amount: recurring.amount,
+      amount: recurring.amount,
 
-    category: recurring.category,
+      category: recurring.category,
 
-    date: recurring.nextRun,
+      date: recurring.nextRun,
 
-    notes: recurring.notes,
+      notes: recurring.notes,
 
-    user: recurring.user,
-  });
+      user: recurring.user,
+    });
+
+  // Notification
+
+  await createNotification(
+    {
+      title: "Recurring Executed",
+
+      message: `${transaction.title} executed automatically.`,
+
+      type: "Recurring",
+
+      priority: "Medium",
+
+      actionUrl: "/recurring",
+    },
+    recurring.user.toString(),
+  );
 
   recurring.nextRun =
     calculateNextRun(
@@ -111,4 +131,4 @@ export async function processRecurringTransaction(
   await recurring.save();
 
   return recurring;
-} 
+}

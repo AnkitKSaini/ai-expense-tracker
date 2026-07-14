@@ -1,5 +1,6 @@
 import Bill from "../models/Bill.js";
 import Expense from "../models/Expense.js";
+import { createNotification } from "./notification.service.js";
 
 export async function createBill(
   data: any,
@@ -69,6 +70,22 @@ export async function payBill(
   bill.paidAt = new Date();
 
   await bill.save();
+
+  await createNotification(
+  {
+    title: "Bill Paid",
+
+    message: `${bill.title} bill paid successfully.`,
+
+    type: "Bill",
+
+    priority: "Medium",
+
+    actionUrl: "/bills",
+  },
+
+  userId,
+);
 
   if (bill.autoCreateExpense) {
     await Expense.create({

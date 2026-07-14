@@ -11,6 +11,7 @@ import investmentRoutes from "./investment.routes.js";
 import investmentExportRoutes from "./investmentExport.routes.js";
 import recurringRoutes from "./recurring.routes.js";
 import billRoutes from "./bill.routes.js";
+import notificationRoutes from "./notification.routes.js";
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use("/investments", investmentRoutes);
 router.use("/investment/export", investmentExportRoutes);
 router.use("/recurring", recurringRoutes);
 router.use("/bills", billRoutes);
+router.use("/notifications", notificationRoutes);
 
 export default router;

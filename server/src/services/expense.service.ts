@@ -1,12 +1,13 @@
 import Expense from "../models/Expense.js";
 import { ApiError } from "../utils/ApiError.js";
 import { HTTP_STATUS } from "../constants/httpStatus.js";
+import { createNotification } from "./notification.service.js";
 
 interface CreateExpenseData {
   title: string;
   amount: number;
   category: string;
-  type: "income" | "expense";
+  type: "Income" | "Expense";
   date?: Date;
 }
 
@@ -14,10 +15,30 @@ export const createExpenseService = async (
   data: CreateExpenseData,
   userId: string,
 ) => {
-  return await Expense.create({
+  const expense = await Expense.create({
     ...data,
     user: userId,
   });
+
+  // Large Expense Alert
+  if (expense.type === "Expense" && expense.amount > 50000) {
+    await createNotification(
+      {
+        title: "Large Expense",
+
+        message: `₹${expense.amount.toLocaleString("en-IN")} expense recorded.`,
+
+        type: "AI",
+
+        priority: "High",
+
+        actionUrl: "/expenses",
+      },
+      userId,
+    );
+  }
+
+  return expense;
 };
 
 export const getExpenseByIdService = async (
@@ -72,7 +93,7 @@ export const getExpensesService = async (
     default:
       sortOption = { date: -1 };
   }
-  
+
   const expenses = await Expense.find(query)
     .sort(sortOption)
     .skip(skip)
@@ -95,7 +116,7 @@ export const updateExpenseService = async (
     title?: string;
     amount?: number;
     category?: string;
-    type?: "income" | "expense";
+    type?: "Income" | "Expense";
     date?: Date;
   },
 ) => {
@@ -127,7 +148,6 @@ export const deleteExpenseService = async (
 
   return expense;
 };
-
 
 export const getCalendarExpensesService = async (
   userId: string,

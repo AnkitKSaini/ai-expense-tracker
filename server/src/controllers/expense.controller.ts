@@ -142,13 +142,13 @@ export const exportExpensesPDF = asyncHandler(
     }).lean();
 
     // Summary
-    const income = expenses
-      .filter((e) => e.type === "income")
-      .reduce((sum, e) => sum + e.amount, 0);
+   const income = expenses
+  .filter((e) => e.type === "Income")
+  .reduce((sum, e) => sum + e.amount, 0);
 
-    const expense = expenses
-      .filter((e) => e.type === "expense")
-      .reduce((sum, e) => sum + e.amount, 0);
+const expense = expenses
+  .filter((e) => e.type === "Expense")
+  .reduce((sum, e) => sum + e.amount, 0);
 
     // Generate PDF
     const pdf = await generatePDF(

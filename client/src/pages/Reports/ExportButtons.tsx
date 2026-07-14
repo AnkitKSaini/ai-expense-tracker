@@ -20,7 +20,7 @@ function ExportButtons() {
           items-center
           gap-2
           rounded-2xl
-          bg-gradient-to-r
+          bg-linear-to-r
           from-red-600
           to-rose-600
           px-6
@@ -46,7 +46,7 @@ function ExportButtons() {
           items-center
           gap-2
           rounded-2xl
-          bg-gradient-to-r
+          bg-linear-to-r
           from-green-600
           to-emerald-600
           px-6
@@ -72,7 +72,7 @@ function ExportButtons() {
           items-center
           gap-2
           rounded-2xl
-          bg-gradient-to-r
+          bg-linear-to-r
           from-slate-700
           to-slate-900
           px-6

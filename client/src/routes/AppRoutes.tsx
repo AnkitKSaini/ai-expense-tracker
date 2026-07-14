@@ -32,6 +32,8 @@ import BillsPage from "../pages/Bills/BillsPage";
 
 import ReportsPage from "../pages/Reports/ReportsPage";
 
+import NotificationPage from "../pages/Notifications/NotificationPage";
+
 function AppRoutes() {
   return (
     <Routes>
@@ -67,6 +69,7 @@ function AppRoutes() {
           <Route path="/investments" element={<InvestmentsPage />} />
           <Route path="/bills" element={<BillsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/notifications" element={<NotificationPage />} />
         </Route>
       </Route>
 

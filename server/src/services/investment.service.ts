@@ -1,6 +1,7 @@
 import Investment from "../models/Investment.js";
 import { ApiError } from "../utils/ApiError.js";
 import { HTTP_STATUS } from "../constants/httpStatus.js";
+import { createNotification } from "./notification.service.js";
 
 export interface CreateInvestmentData {
   title: string;
@@ -54,10 +55,27 @@ export const createInvestmentService = async (
   data: CreateInvestmentData,
   userId: string,
 ) => {
-  return await Investment.create({
+  const investment = await Investment.create({
     ...data,
     user: userId,
   });
+
+  await createNotification(
+    {
+      title: "Investment Added",
+
+      message: `${investment.title} added to portfolio.`,
+
+      type: "Investment",
+
+      priority: "Low",
+
+      actionUrl: "/investments",
+    },
+    userId,
+  );
+
+  return investment;
 };
 
 // =======================

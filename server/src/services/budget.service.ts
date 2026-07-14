@@ -2,6 +2,7 @@ import Budget from "../models/Budget.js";
 import type { CreateBudgetDto } from "../types/budget.types.js";
 import { ApiError } from "../utils/ApiError.js";
 import { HTTP_STATUS } from "../constants/httpStatus.js";
+import { createNotification } from "./notification.service.js";
 
 export const createBudgetService = async (
   data: CreateBudgetDto,
@@ -44,7 +45,7 @@ export const updateBudgetService = async (
   amount: number,
   userId: string,
 ) => {
-  return await Budget.findOneAndUpdate(
+  const budget = await Budget.findOneAndUpdate(
     {
       _id: budgetId,
       user: userId,
@@ -56,6 +57,30 @@ export const updateBudgetService = async (
       new: true,
     },
   );
+
+  if (!budget) {
+    throw new ApiError(
+      HTTP_STATUS.NOT_FOUND,
+      "Budget not found",
+    );
+  }
+
+  await createNotification(
+    {
+      title: "Budget Updated",
+
+      message: "Your monthly budget has been updated.",
+
+      type: "Budget",
+
+      priority: "Low",
+
+      actionUrl: "/budget",
+    },
+    userId,
+  );
+
+  return budget;
 };
 
 export const deleteBudgetService = async (budgetId: string, userId: string) => {

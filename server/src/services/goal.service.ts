@@ -1,4 +1,6 @@
 import Goal from "../models/Goal.js";
+import { createNotification } from "./notification.service.js";
+
 import type { CreateGoalDto } from "../types/goal.types.js";
 
 export const createGoalService = async (
@@ -11,7 +13,9 @@ export const createGoalService = async (
   });
 };
 
-export const getGoalsService = async (userId: string) => {
+export const getGoalsService = async (
+  userId: string,
+) => {
   return Goal.find({
     user: userId,
   }).sort({
@@ -29,7 +33,7 @@ export const updateGoalService = async (
     deadline?: Date;
   },
 ) => {
-  return await Goal.findOneAndUpdate(
+  const goal = await Goal.findOneAndUpdate(
     {
       _id: goalId,
       user: userId,
@@ -40,10 +44,40 @@ export const updateGoalService = async (
       runValidators: true,
     },
   );
+
+  if (!goal) {
+    return null;
+  }
+
+  // Goal Completed Notification
+  if (
+    goal.savedAmount >=
+    goal.targetAmount
+  ) {
+    await createNotification(
+      {
+        title: "Goal Completed",
+
+        message: `${goal.title} completed successfully.`,
+
+        type: "Goal",
+
+        priority: "High",
+
+        actionUrl: "/goals",
+      },
+      userId,
+    );
+  }
+
+  return goal;
 };
 
-export const deleteGoalService = async (goalId: string, userId: string) => {
-  return await Goal.findOneAndDelete({
+export const deleteGoalService = async (
+  goalId: string,
+  userId: string,
+) => {
+  return Goal.findOneAndDelete({
     _id: goalId,
     user: userId,
   });

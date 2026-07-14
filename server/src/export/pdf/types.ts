@@ -1,10 +1,8 @@
-import PDFDocument from "pdfkit";
-
 export interface ExpensePDF {
   title: string;
   amount: number;
   category: string;
-  type: "income" | "expense";
+  type: "Income" | "Expense";
   date: Date;
 }
 
