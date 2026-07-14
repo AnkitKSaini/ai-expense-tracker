@@ -30,6 +30,8 @@ import RecurringPage from "../pages/Recurring/RecurringPage";
 
 import BillsPage from "../pages/Bills/BillsPage";
 
+import ReportsPage from "../pages/Reports/ReportsPage";
+
 function AppRoutes() {
   return (
     <Routes>
@@ -64,6 +66,7 @@ function AppRoutes() {
           <Route path="/goals" element={<GoalsPage />} />
           <Route path="/investments" element={<InvestmentsPage />} />
           <Route path="/bills" element={<BillsPage />} />
+          <Route path="/reports" element={<ReportsPage />} />
         </Route>
       </Route>
 

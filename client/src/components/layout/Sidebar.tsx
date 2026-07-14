@@ -10,6 +10,8 @@ import { Repeat } from "lucide-react";
 
 import { ReceiptText } from "lucide-react";
 
+import { BarChart3 } from "lucide-react";
+
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -65,6 +67,11 @@ function Sidebar({ open, onClose }: Props) {
       icon: ReceiptText,
     },
     {
+      name: "Reports",
+      path: "/reports",
+      icon: BarChart3,
+    },
+    {
       name: "Settings",
       path: "/settings",
       icon: Settings,
@@ -95,7 +102,6 @@ function Sidebar({ open, onClose }: Props) {
   `}
       >
         <div className="flex h-full flex-col overflow-y-auto overscroll-contain p-6 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
-   
           <div className="mb-8 border-b border-slate-700 pb-6">
             <h2 className="text-2x2 font-bold text-white">
               💰 AI Expense Tracker

@@ -2,7 +2,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import * as budgetService from "../services/budget.service";
 
-export function useBudget(month: number, year: number) {
+export function useBudget(
+  month = new Date().getMonth() + 1,
+  year = new Date().getFullYear(),
+) {
   const queryClient = useQueryClient();
 
   const budgetQuery = useQuery({

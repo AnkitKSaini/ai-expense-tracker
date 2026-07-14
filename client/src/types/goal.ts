@@ -4,6 +4,8 @@ export interface Goal {
   targetAmount: number;
   savedAmount: number;
   deadline: string;
+    completed: boolean;
+
 }
 
 export interface CreateGoalDto {
