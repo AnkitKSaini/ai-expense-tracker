@@ -8,6 +8,8 @@ import { Target, Landmark } from "lucide-react";
 
 import { Repeat } from "lucide-react";
 
+import { ReceiptText } from "lucide-react";
+
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -58,6 +60,11 @@ function Sidebar({ open, onClose }: Props) {
       icon: Bot,
     },
     {
+      name: "Bills",
+      path: "/bills",
+      icon: ReceiptText,
+    },
+    {
       name: "Settings",
       path: "/settings",
       icon: Settings,
@@ -79,6 +86,7 @@ function Sidebar({ open, onClose }: Props) {
         className={`
     fixed inset-y-0 left-0 z-50
     w-64
+    overflow-hidden
     bg-linear-to-b from-slate-900 via-slate-800 to-slate-900
     text-white shadow-2xl
     transform transition-transform duration-300 ease-in-out
@@ -86,7 +94,8 @@ function Sidebar({ open, onClose }: Props) {
     lg:translate-x-0
   `}
       >
-        <div className="p-6 flex h-full flex-col">
+        <div className="flex h-full flex-col overflow-y-auto overscroll-contain p-6 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
+   
           <div className="mb-8 border-b border-slate-700 pb-6">
             <h2 className="text-2x2 font-bold text-white">
               💰 AI Expense Tracker
@@ -96,7 +105,6 @@ function Sidebar({ open, onClose }: Props) {
               Smart Finance Dashboard
             </p>
           </div>
-
           <nav className="flex-1 space-y-3">
             {links.map((link) => {
               const Icon = link.icon;

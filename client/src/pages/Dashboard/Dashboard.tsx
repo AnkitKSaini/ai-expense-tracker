@@ -17,6 +17,8 @@ import ForecastCard from "../Dashboard/ForecastCard";
 
 import UpcomingRecurring from "../../pages/Dashboard/UpcomingRecurring";
 
+import UpcomingBills from "../../pages/Bills/UpcomingBillsWidget";
+
 function Dashboard() {
   const { data, isPending } = useDashboard();
   const months = [
@@ -130,6 +132,7 @@ function Dashboard() {
         />
       </div>
       <UpcomingRecurring />
+      <UpcomingBills />
 
       <div className="mt-6">
         <RecentTransactions expenses={data.recentTransactions} />
@@ -175,6 +178,8 @@ function Dashboard() {
           monthlyExpense={data.monthlyExpense}
         />
       </div>
+
+      
     </motion.div>
   );
 }

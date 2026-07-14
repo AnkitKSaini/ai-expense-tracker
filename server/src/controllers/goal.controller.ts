@@ -49,8 +49,13 @@ export const deleteGoal = asyncHandler(
 export const predictGoalAI = asyncHandler(async (req, res) => {
   const result = await predictGoal(req.body);
 
+  const cleaned = result
+    .replace(/```json/gi, "")
+    .replace(/```/g, "")
+    .trim();
+
   res.json({
     success: true,
-    data: JSON.parse(result),
+    data: JSON.parse(cleaned),
   });
 });

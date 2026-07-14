@@ -121,34 +121,24 @@ function InvestmentForm({ open, investment, onClose }: Props) {
     });
   }, [investment, reset]);
 
-  const onSubmit = async (
-  data: InvestmentFormData,
-) => {
-  try {
+  const onSubmit = async (data: InvestmentFormData) => {
+    try {
+      if (isEdit && investment) {
+        await updateInvestmentAsync({
+          id: investment._id,
+          data,
+        });
+      } else {
+        await createInvestmentAsync(data);
+      }
 
-    if (isEdit && investment) {
+      reset();
 
-      await updateInvestmentAsync({
-        id: investment._id,
-        data,
-      });
-
-    } else {
-
-      await createInvestmentAsync(data);
-
+      onClose();
+    } catch (error) {
+      console.error(error);
     }
-
-    reset();
-
-    onClose();
-
-  } catch (error) {
-
-    console.error(error);
-
-  }
-};
+  };
 
   if (!open) return null;
 
@@ -179,7 +169,7 @@ function InvestmentForm({ open, investment, onClose }: Props) {
         {/* Form */}
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="space-y-6 p-6">
+          <div className="max-h-[70vh] overflow-y-auto overscroll-contain space-y-6 p-6">
             {/* Part 2 */}
 
             {/* Basic Information */}
@@ -301,7 +291,7 @@ function InvestmentForm({ open, investment, onClose }: Props) {
                 const roi = invested === 0 ? 0 : (profit / invested) * 100;
 
                 return (
-                  <div className="rounded-2xl bg-gradient-to-r from-blue-50 to-cyan-50 p-5 dark:from-slate-800 dark:to-slate-900">
+                  <div className="rounded-2xl bg-linear-to-r from-blue-50 to-cyan-50 p-5 dark:from-slate-800 dark:to-slate-900">
                     <h3 className="mb-4 text-lg font-bold dark:text-white">
                       Live Portfolio Preview
                     </h3>
@@ -529,7 +519,7 @@ function InvestmentForm({ open, investment, onClose }: Props) {
             </div>
           </div>
 
-          <div className="flex justify-end gap-4 border-t border-gray-200 p-6 dark:border-gray-700">
+          <div className="sticky bottom-0 flex justify-end gap-4 border-t border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-900">
             <button
               type="button"
               onClick={onClose}

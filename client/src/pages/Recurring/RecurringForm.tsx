@@ -50,10 +50,10 @@ function RecurringForm({ open, recurring, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-5 backdrop-blur-sm">
-      <div className="w-full max-w-2xl rounded-3xl bg-white p-8 shadow-2xl dark:bg-gray-900">
+      <div className="w-full max-w-2xl rounded-3xl bg-white shadow-2xl dark:bg-gray-900">
         {/* Header */}
 
-        <div className="mb-8 flex items-center justify-between">
+        <div className="flex items-center justify-between border-b p-8 dark:border-gray-800">
           <div>
             <h2 className="text-2xl font-bold dark:text-white">
               {recurring ? "Edit Recurring" : "New Recurring"}
@@ -72,7 +72,11 @@ function RecurringForm({ open, recurring, onClose }: Props) {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="max-h-[65vh] overflow-y-auto overscroll-contain p-8"
+        >
+          {" "}
           <div className="grid gap-5 md:grid-cols-2">
             <input
               {...register("title")}
@@ -133,15 +137,13 @@ function RecurringForm({ open, recurring, onClose }: Props) {
               <option value="false">Inactive</option>
             </select>
           </div>
-
           <textarea
             {...register("notes")}
             rows={4}
             placeholder="Notes"
             className="w-full rounded-xl border p-3 dark:bg-gray-800"
           />
-
-          <div className="flex justify-end gap-3">
+          <div className="sticky bottom-0 flex justify-end gap-3 border-t bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
             <button
               type="button"
               onClick={onClose}
