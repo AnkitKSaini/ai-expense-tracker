@@ -14,6 +14,7 @@ import { BarChart3 } from "lucide-react";
 
 import { Bell } from "lucide-react";
 
+import { Database } from "lucide-react";
 
 interface Props {
   open: boolean;
@@ -83,6 +84,11 @@ function Sidebar({ open, onClose }: Props) {
       name: "Settings",
       path: "/settings",
       icon: Settings,
+    },
+    {
+      name: "Backup",
+      path: "/backup",
+      icon: Database,
     },
   ];
 
