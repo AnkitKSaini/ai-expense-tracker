@@ -26,7 +26,7 @@ async function seed() {
     if (!demoUser) {
       const hashedPassword = await bcrypt.hash(
         "Demo@123",
-        10
+        10,
       );
 
       demoUser = await User.create({
@@ -49,15 +49,26 @@ async function seed() {
     const expenses = [];
 
     for (let i = 0; i < TOTAL_EXPENSES; i++) {
+      const expense = generateExpense();
+
       expenses.push({
-        ...generateExpense(),
+        ...expense,
+
+        // Fix enum values
+        type:
+          expense.type.toLowerCase() === "Income"
+            ? "Income"
+            : "Expense",
+
         user: demoUser._id,
       });
     }
 
     await Expense.insertMany(expenses);
 
-    console.log(`✅ ${TOTAL_EXPENSES} expenses inserted successfully`);
+    console.log(
+      `✅ ${TOTAL_EXPENSES} expenses inserted successfully`,
+    );
 
     process.exit(0);
   } catch (error) {

@@ -51,6 +51,7 @@ function Dashboard() {
     const item = data?.incomeExpenseTrend.find(
       (trend) => trend.month === index + 1,
     );
+    
 
     return {
       month,

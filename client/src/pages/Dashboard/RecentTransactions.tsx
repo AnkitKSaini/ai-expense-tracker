@@ -23,7 +23,7 @@ function RecentTransactions({ expenses }: Props) {
           Your latest income and expense records
         </p>
       </div>
-      <div className="max-h-[420px] space-y-3 overflow-y-auto pr-2">
+      <div className="max-h-420px space-y-3 overflow-y-auto pr-2">
         {expenses.length === 0 ? (
           <div className="rounded-xl border border-dashed border-gray-300 p-8 text-center dark:border-gray-700">
             <p className="text-gray-500 dark:text-gray-400">
@@ -39,12 +39,12 @@ function RecentTransactions({ expenses }: Props) {
               <div>
                 <span
                   className={`inline-block rounded-full px-2 py-1 text-xs font-semibold ${
-                    expense.type === "income"
+                    expense.type === "Income"
                       ? "bg-green-100 text-green-700"
                       : "bg-red-100 text-red-700"
                   }`}
                 >
-                  {expense.type === "income" ? "Income" : "Expense"}
+                  {expense.type === "Income" ? "Income" : "Expense"}
                 </span>
                 <h3 className="font-medium">{expense.title}</h3>
 
@@ -56,12 +56,12 @@ function RecentTransactions({ expenses }: Props) {
               <div className="text-right">
                 <p
                   className={
-                    expense.type === "income"
+                    expense.type === "Income"
                       ? "font-bold text-green-600"
                       : "font-bold text-red-600"
                   }
                 >
-                  {expense.type === "income" ? "+" : "-"}₹
+                  {expense.type === "Income" ? "+" : "-"}₹
                   {expense.amount.toLocaleString()}
                 </p>
 

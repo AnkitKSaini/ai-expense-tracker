@@ -9,7 +9,7 @@ import {
 
 interface Expense {
   amount: number;
-  type: "income" | "expense";
+  type: "Income" | "Expense";
   date: string;
 }
 
@@ -19,11 +19,11 @@ interface Props {
 
 function MonthlyAnalytics({ expenses }: Props) {
   const income = expenses
-    .filter((e) => e.type === "income")
+    .filter((e) => e.type === "Income")
     .reduce((sum, e) => sum + e.amount, 0);
 
   const expense = expenses
-    .filter((e) => e.type === "expense")
+    .filter((e) => e.type === "Expense")
     .reduce((sum, e) => sum + e.amount, 0);
 
   const savings = income - expense;
@@ -31,7 +31,7 @@ function MonthlyAnalytics({ expenses }: Props) {
   const grouped = new Map<string, number>();
 
   expenses
-    .filter((e) => e.type === "expense")
+    .filter((e) => e.type === "Expense")
     .forEach((item) => {
       const key = new Date(item.date).toDateString();
 

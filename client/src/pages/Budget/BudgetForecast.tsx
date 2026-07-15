@@ -9,7 +9,7 @@ import {
 
 interface Expense {
   amount: number;
-  type: "income" | "expense";
+  type: "Income" | "Expense";
 }
 
 interface Props {
@@ -37,7 +37,7 @@ function BudgetForecast({
   );
 
   const totalExpense = expenses
-    .filter((e) => e.type === "expense")
+    .filter((e) => e.type === "Expense")
     .reduce((sum, e) => sum + e.amount, 0);
 
   const dailyAverage =

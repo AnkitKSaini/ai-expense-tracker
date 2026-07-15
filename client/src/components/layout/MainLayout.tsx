@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import Footer from "./Footer/Footer";
 
 function MainLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -18,11 +19,15 @@ function MainLayout() {
 
         {/* Content */}
         <div className="flex min-h-screen flex-1 flex-col lg:ml-64">
-          <Navbar onMenuClick={() => setSidebarOpen(true)} />
+          <Navbar
+            onMenuClick={() => setSidebarOpen(true)}
+          />
 
           <main className="flex-1 p-6 text-black transition-colors duration-300 dark:text-white">
             <Outlet />
           </main>
+
+          <Footer />
         </div>
       </div>
     </div>

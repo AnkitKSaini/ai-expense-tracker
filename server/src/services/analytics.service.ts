@@ -7,7 +7,7 @@ export const getCategoryAnalyticsService = async (
     {
       $match: {
         user: Expense.db.base.Types.ObjectId.createFromHexString(userId),
-        type: "expense",
+        type: "Expense",
       },
     },
     {

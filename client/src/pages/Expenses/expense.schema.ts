@@ -6,7 +6,7 @@ export const expenseSchema = z.object({
     .number()
     .positive("Amount must be greater than 0"),
   category: z.string().min(1, "Select category"),
-  type: z.enum(["income", "expense"]),
+  type: z.enum(["Income", "Expense"]),
   date: z.string().min(1, "Select date"),
 });
 

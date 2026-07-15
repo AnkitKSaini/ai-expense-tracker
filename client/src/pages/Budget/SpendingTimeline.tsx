@@ -2,7 +2,7 @@ import { TrendingUp } from "lucide-react";
 
 interface Expense {
   amount: number;
-  type: "income" | "expense";
+  type: "Income" | "Expense";
   date: string;
 }
 
@@ -12,7 +12,7 @@ interface Props {
 
 function SpendingTimeline({ expenses }: Props) {
   const expenseDays = expenses
-    .filter((e) => e.type === "expense")
+    .filter((e) => e.type === "Expense")
     .sort(
       (a, b) =>
         new Date(a.date).getTime() -

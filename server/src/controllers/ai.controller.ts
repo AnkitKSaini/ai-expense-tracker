@@ -14,11 +14,11 @@ export const getExpenseInsights = async (req: AuthRequest, res: Response) => {
 
     // Totals
     const totalIncome = expenses
-      .filter((item) => item.type === "income")
+      .filter((item) => item.type === "Income")
       .reduce((sum, item) => sum + item.amount, 0);
 
     const totalExpense = expenses
-      .filter((item) => item.type === "expense")
+      .filter((item) => item.type === "Expense")
       .reduce((sum, item) => sum + item.amount, 0);
 
     const balance = totalIncome - totalExpense;
@@ -53,7 +53,7 @@ export const getExpenseInsights = async (req: AuthRequest, res: Response) => {
 
       const current = monthlyMap.get(month)!;
 
-      if (item.type === "income") {
+      if (item.type === "Income") {
         current.income += item.amount;
       } else {
         current.expense += item.amount;
@@ -68,7 +68,7 @@ export const getExpenseInsights = async (req: AuthRequest, res: Response) => {
     const categoryTotals = new Map<string, number>();
 
     expenses
-      .filter((item) => item.type === "expense")
+      .filter((item) => item.type === "Expense")
       .forEach((item) => {
         categoryTotals.set(
           item.category,
@@ -118,11 +118,11 @@ export const chatWithAI = async (req: AuthRequest, res: Response) => {
     });
 
     const totalIncome = expenses
-      .filter((item) => item.type === "income")
+      .filter((item) => item.type === "Income")
       .reduce((sum, item) => sum + item.amount, 0);
 
     const totalExpense = expenses
-      .filter((item) => item.type === "expense")
+      .filter((item) => item.type === "Expense")
       .reduce((sum, item) => sum + item.amount, 0);
 
     const balance = totalIncome - totalExpense;
@@ -155,7 +155,7 @@ export const chatWithAI = async (req: AuthRequest, res: Response) => {
 
       const current = monthlyMap.get(month)!;
 
-      if (item.type === "income") {
+      if (item.type === "Income") {
         current.income += item.amount;
       } else {
         current.expense += item.amount;
@@ -169,7 +169,7 @@ export const chatWithAI = async (req: AuthRequest, res: Response) => {
     const categoryTotals = new Map<string, number>();
 
     expenses
-      .filter((item) => item.type === "expense")
+      .filter((item) => item.type === "Expense")
       .forEach((item) => {
         categoryTotals.set(
           item.category,

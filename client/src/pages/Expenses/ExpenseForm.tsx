@@ -19,7 +19,7 @@ function ExpenseForm() {
   } = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseSchema),
     defaultValues: {
-      type: "expense",
+      type: "Expense",
     },
   });
 
@@ -76,8 +76,8 @@ function ExpenseForm() {
       <p className="text-sm text-red-500">{errors.category?.message}</p>
 
       <select {...register("type")} className="w-full rounded border p-3">
-        <option value="expense">Expense</option>
-        <option value="income">Income</option>
+        <option value="Expense">Expense</option>
+        <option value="Income">Income</option>
       </select>
 
       <input

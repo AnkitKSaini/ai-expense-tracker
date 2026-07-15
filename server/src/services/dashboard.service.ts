@@ -28,7 +28,7 @@ export const getDashboardSummary = async (
     {
       $match: {
         user: userObjectId,
-        type: "expense",
+        type: "Expense",
       },
     },
     {
@@ -58,7 +58,7 @@ export const getDashboardSummary = async (
     {
       $match: {
         user: userObjectId,
-        type: "expense",
+        type: "Expense",
       },
     },
     {
@@ -132,7 +132,7 @@ const incomeExpenseTrend = await Expense.aggregate([
                     input: "$data",
                     as: "item",
                     cond: {
-                      $eq: ["$$item.type", "income"],
+                      $eq: ["$$item.type", "Income"],
                     },
                   },
                 },
@@ -155,7 +155,7 @@ const incomeExpenseTrend = await Expense.aggregate([
                     input: "$data",
                     as: "item",
                     cond: {
-                      $eq: ["$$item.type", "expense"],
+                      $eq: ["$$item.type", "Expense"],
                     },
                   },
                 },
@@ -179,11 +179,11 @@ const incomeExpenseTrend = await Expense.aggregate([
 
   // Summary
   const totalIncome = expenses
-    .filter((item) => item.type === "income")
+    .filter((item) => item.type === "Income")
     .reduce((sum, item) => sum + item.amount, 0);
 
   const totalExpense = expenses
-    .filter((item) => item.type === "expense")
+    .filter((item) => item.type === "Expense")
     .reduce((sum, item) => sum + item.amount, 0);
 
   const balance = totalIncome - totalExpense;

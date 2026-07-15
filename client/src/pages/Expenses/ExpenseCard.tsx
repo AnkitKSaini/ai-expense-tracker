@@ -29,7 +29,7 @@ function ExpenseCard({
 
         <div
           className={
-            expense.type === "income"
+            expense.type === "Income"
               ? "font-bold text-green-600"
               : "font-bold text-red-600"
           }

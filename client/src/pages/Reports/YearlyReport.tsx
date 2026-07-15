@@ -29,7 +29,7 @@ const data =
 
             <Tooltip />
 
-            <Line type="monotone" dataKey="expense" strokeWidth={3} />
+            <Line type="monotone" dataKey="Expense" strokeWidth={3} />
           </LineChart>
         </ResponsiveContainer>
       </div>

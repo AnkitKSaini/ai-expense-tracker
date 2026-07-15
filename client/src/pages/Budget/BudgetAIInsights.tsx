@@ -3,7 +3,7 @@ import { Brain, Sparkles, AlertTriangle } from "lucide-react";
 interface Expense {
   amount: number;
   category: string;
-  type: "income" | "expense";
+  type: "Income" | "Expense";
 }
 
 interface Props {
@@ -16,7 +16,7 @@ function BudgetAIInsights({
   budget,
 }: Props) {
   const expenseItems = expenses.filter(
-    (e) => e.type === "expense",
+    (e) => e.type === "Expense",
   );
 
   const totalExpense = expenseItems.reduce(

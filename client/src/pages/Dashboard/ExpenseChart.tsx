@@ -26,7 +26,7 @@ function ExpenseChart() {
           <XAxis dataKey="month" />
           <Tooltip />
           <Line
-            dataKey="expense"
+            dataKey="Expense"
             stroke="#2563EB"
             strokeWidth={3}
           />

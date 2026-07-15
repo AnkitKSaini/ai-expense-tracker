@@ -48,11 +48,17 @@ export function generateExpense() {
 
   return {
     title: randomItem(titles),
+
     amount: isIncome
       ? randomNumber(15000, 80000)
       : randomNumber(100, 5000),
+
     category,
-    type: isIncome ? "income" : "expense",
+
+    type: isIncome
+      ? "Income"
+      : "Expense",
+
     date: randomDate(),
   };
 }

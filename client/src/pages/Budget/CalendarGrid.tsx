@@ -8,7 +8,7 @@ interface CalendarExpense {
   title: string;
   category: string;
   amount: number;
-  type: "income" | "expense";
+  type: "Income" | "Expense";
   date: string;
 }
 
@@ -95,7 +95,7 @@ function CalendarGrid({ currentDate, expenses, loading }: Props) {
           );
 
           const hasExpense = dayTransactions.some(
-            (item) => item.type === "expense",
+            (item) => item.type === "Expense",
           );
 
           let heatColor = "";
@@ -207,7 +207,7 @@ function CalendarGrid({ currentDate, expenses, loading }: Props) {
 
                         <p
                           className={`font-bold ${
-                            item.type === "expense"
+                            item.type === "Expense"
                               ? "text-red-400"
                               : "text-green-400"
                           }`}

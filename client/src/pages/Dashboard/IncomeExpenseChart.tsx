@@ -27,7 +27,7 @@ function IncomeExpenseChart({ data }: Props) {
         </h2>
 
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          Monthly income compared with expenses
+          Monthly Income compared with Expenses
         </p>
       </div>
 
