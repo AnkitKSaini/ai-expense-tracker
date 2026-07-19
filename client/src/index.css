@@ -127,3 +127,45 @@
   background: #1d4ed8 !important;
   color: white !important;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.marquee {
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.marquee-reverse {
+  width: max-content;
+  animation: marquee-reverse 35s linear infinite;
+}
+
+@media (max-width: 768px) {
+  .marquee,
+  .marquee-reverse {
+    animation-duration: 24s;
+  }
+}

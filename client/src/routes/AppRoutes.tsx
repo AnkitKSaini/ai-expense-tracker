@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route,  } from "react-router-dom";
 
 import MainLayout from "../components/layout/MainLayout";
 
@@ -36,19 +36,18 @@ import NotificationPage from "../pages/Notifications/NotificationPage";
 
 import BackupPage from "../pages/Backup/BackupPage";
 
+import LandingPage from "../pages/Landing/LandingPage";
+
 function AppRoutes() {
   return (
     <Routes>
       {/* Home */}
-      <Route
-        path="/"
-        element={
-          <Navigate
-            to={localStorage.getItem("token") ? "/dashboard" : "/login"}
-            replace
-          />
-        }
-      />
+     <Route
+  path="/"
+  element={<LandingPage />}
+/>
+        
+      
 
       {/* Public Routes */}
       <Route element={<PublicRoute />}>
@@ -73,6 +72,7 @@ function AppRoutes() {
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/notifications" element={<NotificationPage />} />
           <Route path="/backup" element={<BackupPage />} />
+
         </Route>
       </Route>
 
