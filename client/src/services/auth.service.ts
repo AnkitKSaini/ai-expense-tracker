@@ -1,27 +1,22 @@
 import api from "../api/api";
+import type {
+  LoginRequest,
+  RegisterRequest,
+  AuthResponse,
+} from "../types/auth";
 
 export const login = async (
-  email: string,
-  password: string
-) => {
-  const { data } = await api.post("/auth/login", {
-    email,
-    password,
-  });
+  data: LoginRequest,
+): Promise<AuthResponse> => {
+  const res = await api.post("/auth/login", data);
 
-  return data;
+  return res.data.data;
 };
 
 export const register = async (
-  name: string,
-  email: string,
-  password: string
-) => {
-  const { data } = await api.post("/auth/register", {
-    name,
-    email,
-    password,
-  });
+  data: RegisterRequest,
+): Promise<AuthResponse> => {
+  const res = await api.post("/auth/register", data);
 
-  return data;
+  return res.data.data;
 };

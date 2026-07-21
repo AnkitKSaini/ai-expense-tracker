@@ -78,24 +78,25 @@ function SecuritySection() {
           className="mx-auto max-w-3xl text-center"
         >
           <div
-            className="
-              inline-flex
-              items-center
-              gap-2
-              rounded-full
-              border
-              border-cyan-200
-              bg-cyan-50
-              px-5
-              py-2
-              text-sm
-              font-semibold
-              text-cyan-700
-              shadow-sm
-              dark:border-cyan-500/20
-              dark:bg-cyan-500/10
-              dark:text-cyan-300
-            "
+           className="
+inline-flex
+items-center
+justify-center
+gap-2
+rounded-full
+border
+border-blue-200
+bg-blue-50
+px-8
+py-3
+text-base
+font-semibold
+shadow-lg
+backdrop-blur
+dark:border-blue-800
+dark:bg-blue-900/30
+dark:text-blue-300
+"
           >
             <ShieldCheck size={16} />
             Security & Privacy

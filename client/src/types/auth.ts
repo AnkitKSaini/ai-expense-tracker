@@ -1,16 +1,24 @@
-export interface User {
-  id: string;
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface RegisterRequest {
   name: string;
   email: string;
-  createdAt: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
   avatar?: string;
 }
 
-export interface LoginResponse {
-  success: boolean;
-  message: string;
-  data: {
-    token: string;
-    user: User;
-  };
+export interface AuthResponse {
+  user: User;
+  accessToken: string;
+  refreshToken: string;
 }

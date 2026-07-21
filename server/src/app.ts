@@ -1,17 +1,28 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+
 import routes from "./routes/index.js";
+import goalRoutes from "./routes/goal.routes.js";
+
 import notFoundMiddleware from "./middleware/notFound.middleware.js";
 import errorMiddleware from "./middleware/error.middleware.js";
-import goalRoutes from "./routes/goal.routes.js";
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// CORS
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
+
+// Middlewares
+app.use(cookieParser());
 app.use(express.json());
 
-// Health Check Route
+// Health Check
 app.get("/", (_req, res) => {
   res.status(200).json({
     success: true,
@@ -19,15 +30,14 @@ app.get("/", (_req, res) => {
   });
 });
 
-// API Routes
+// Routes
 app.use("/api", routes);
-
 app.use("/api/goal", goalRoutes);
 
-// 404 Middleware (Always after routes)
+// 404
 app.use(notFoundMiddleware);
 
-// Error Middleware (Always last)
+// Error
 app.use(errorMiddleware);
 
 export default app;

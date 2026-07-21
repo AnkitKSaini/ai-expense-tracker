@@ -1,62 +1,74 @@
-import type { Request, Response, NextFunction } from "express";
-import jwt, { type JwtPayload } from "jsonwebtoken";
+import type {
+  Response,
+  NextFunction,
+} from "express";
 
-export interface AuthRequest extends Request<{ id: string }> {
-  user?: {
-    id: string;
-  };
-}
+import type { AuthRequest } from "../types/auth.types.js";
 
-const authMiddleware = (
+import jwt from "jsonwebtoken";
+
+import { env } from "../config/env.js";
+import User from "../models/User.js";
+
+import { ApiError } from "../utils/ApiError.js";
+import { HTTP_STATUS } from "../constants/httpStatus.js";
+
+const authMiddleware = async (
   req: AuthRequest,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader?.startsWith("Bearer ")) {
-    return res.status(401).json({
-      success: false,
-      message: "Unauthorized",
-    });
-  }
-
   try {
+    const authHeader = req.headers.authorization;
+
+    if (
+      !authHeader ||
+      !authHeader.startsWith("Bearer ")
+    ) {
+      throw new ApiError(
+        HTTP_STATUS.UNAUTHORIZED,
+        "Unauthorized",
+      );
+    }
+
+    
     const token = authHeader.split(" ")[1];
 
     if (!token) {
-      return res.status(401).json({
-        success: false,
-        message: "Token missing",
-      });
+      throw new ApiError(
+        HTTP_STATUS.UNAUTHORIZED,
+        "Token not provided",
+      );
     }
 
-    const secret = process.env.JWT_SECRET;
-
-    if (!secret) {
-      throw new Error("JWT_SECRET is missing");
-    }
-
-    const decoded = jwt.verify(token, secret);
-
-    // Type guard
-    if (typeof decoded === "string" || !("id" in decoded)) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid Token",
-      });
-    }
-
-    req.user = {
-      id: decoded.id as string,
+    const decoded = jwt.verify(
+      token,
+      env.JWT_ACCESS_SECRET,
+    ) as unknown as {
+      userId: string;
     };
+
+    const user = await User.findById(
+      decoded.userId,
+    ).select("-password -refreshToken");
+
+    if (!user) {
+      throw new ApiError(
+        HTTP_STATUS.UNAUTHORIZED,
+        "User not found",
+      );
+    }
+
+    req.user = user;
 
     next();
   } catch {
-    return res.status(401).json({
-      success: false,
-      message: "Invalid Token",
-    });
+    next(
+      new ApiError(
+        HTTP_STATUS.UNAUTHORIZED,
+        "Invalid or expired token",
+      ),
+    );
   }
 };
 

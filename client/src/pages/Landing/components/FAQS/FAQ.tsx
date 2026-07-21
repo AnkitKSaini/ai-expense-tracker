@@ -34,7 +34,25 @@ function FAQ() {
         transition={{ duration: 0.6 }}
         className="text-center"
       >
-        <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white/80 px-5 py-2 text-sm font-semibold text-blue-700 shadow-sm backdrop-blur dark:border-blue-800 dark:bg-blue-900/20 dark:text-cyan-300">
+        <div className="
+inline-flex
+items-center
+justify-center
+gap-2
+rounded-full
+border
+border-blue-200
+bg-blue-50
+px-8
+py-3
+text-base
+font-semibold
+shadow-lg
+backdrop-blur
+dark:border-blue-800
+dark:bg-blue-900/30
+dark:text-blue-300
+">
           <HelpCircle size={16} />
           Frequently Asked Questions
         </div>

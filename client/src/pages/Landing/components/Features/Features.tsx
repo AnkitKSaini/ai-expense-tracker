@@ -18,7 +18,25 @@ function Features() {
         {/* Section Header */}
 
         <div className="mx-auto max-w-3xl text-center">
-          <span className="rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+          <span className="
+inline-flex
+items-center
+justify-center
+gap-2
+rounded-full
+border
+border-blue-200
+bg-blue-50
+px-8
+py-3
+text-base
+font-semibold
+shadow-lg
+backdrop-blur
+dark:border-blue-800
+dark:bg-blue-900/30
+dark:text-blue-300
+">
             FEATURES
           </span>
 

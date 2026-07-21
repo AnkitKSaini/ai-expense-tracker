@@ -3,7 +3,7 @@ import type { Response } from "express";
 import asyncHandler from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { HTTP_STATUS } from "../constants/httpStatus.js";
-import type { AuthRequest } from "../middleware/auth.middleware.js";
+import type { AuthRequest } from "../types/auth.types.js";
 import  { getDashboardSummary  } from "../services/dashboard.service.js";
 
 export const getDashboard = asyncHandler(

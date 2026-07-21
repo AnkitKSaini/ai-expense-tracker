@@ -1,4 +1,4 @@
-import { Routes, Route,  } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import MainLayout from "../components/layout/MainLayout";
 
@@ -6,8 +6,11 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import Expenses from "../pages/Expenses/ExpensesPage";
 import Profile from "../pages/Profile/Profile";
 
-import Login from "../pages/Auth/Login";
-import Register from "../pages/Auth/Register";
+import LoginPage from "../pages/Auth/LoginPage";
+import RegisterPage from "../pages/Auth/RegisterPage";
+import ForgotPasswordPage from "../pages/Auth/ForgotPasswordPage";
+import VerifyOTPPage from "../pages/Auth/VerifyOTPPage";
+import ResetPasswordPage from "../pages/Auth/ResetPasswordPage";
 
 import NotFound from "../pages/NotFound/NotFound";
 import PublicRoute from "./PublicRoute";
@@ -42,17 +45,15 @@ function AppRoutes() {
   return (
     <Routes>
       {/* Home */}
-     <Route
-  path="/"
-  element={<LandingPage />}
-/>
-        
-      
+      <Route path="/" element={<LandingPage />} />
 
       {/* Public Routes */}
       <Route element={<PublicRoute />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/verify-otp" element={<VerifyOTPPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Route>
 
       {/* Protected Routes */}
@@ -72,7 +73,6 @@ function AppRoutes() {
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/notifications" element={<NotificationPage />} />
           <Route path="/backup" element={<BackupPage />} />
-
         </Route>
       </Route>
 

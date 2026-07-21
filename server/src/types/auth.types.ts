@@ -1,7 +1,7 @@
 import type { Request } from "express";
 
-export interface JwtPayload {
-  id: string;
+export interface AuthRequest extends Request {
+  user?: any;
 }
 
 export interface RegisterDto {
@@ -15,9 +15,20 @@ export interface LoginDto {
   password: string;
 }
 
-export interface AuthRequest extends Request {
-  user?: {
-    id: string;
-  };
+export interface JwtPayload {
+  userId: string;
 }
 
+export interface AuthUser {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+  role: string;
+}
+
+export interface AuthResponse {
+  user: AuthUser;
+  accessToken: string;
+  refreshToken: string;
+}

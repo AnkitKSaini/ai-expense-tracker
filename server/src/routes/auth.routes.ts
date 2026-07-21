@@ -3,27 +3,43 @@ import { Router } from "express";
 import {
   register,
   login,
+  logout,
+  me,
 } from "../controllers/auth.controller.js";
 
-import validate from "../middleware/validate.middleware.js";
+import  validate  from "../middleware/validate.middleware.js";
 
 import {
   registerSchema,
   loginSchema,
 } from "../validators/auth.validator.js";
 
+import authMiddleware from "../middleware/auth.middleware.js";
+
 const router = Router();
 
 router.post(
   "/register",
   validate(registerSchema),
-  register
+  register,
 );
 
 router.post(
   "/login",
   validate(loginSchema),
-  login
+  login,
+);
+
+router.post(
+  "/logout",
+  authMiddleware,
+  logout,
+);
+
+router.get(
+  "/me",
+  authMiddleware,
+  me,
 );
 
 export default router;

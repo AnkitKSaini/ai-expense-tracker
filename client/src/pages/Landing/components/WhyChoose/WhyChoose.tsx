@@ -29,7 +29,25 @@ function WhyChoose() {
           }}
           className="mx-auto max-w-3xl text-center"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-200/60 bg-white/70 px-5 py-2 text-sm font-semibold text-blue-600 shadow-lg backdrop-blur-xl dark:border-blue-800/40 dark:bg-gray-900/70 dark:text-blue-400">
+          <div className="
+inline-flex
+items-center
+justify-center
+gap-2
+rounded-full
+border
+border-blue-200
+bg-blue-50
+px-8
+py-3
+text-base
+font-semibold
+shadow-lg
+backdrop-blur
+dark:border-blue-800
+dark:bg-blue-900/30
+dark:text-blue-300
+">
             ✨ AI Expense Tracker
           </div>
 

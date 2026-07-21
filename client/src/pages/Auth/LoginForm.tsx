@@ -4,12 +4,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-import { loginSchema, type LoginFormData } from "./login.schema";
-import { useAuth } from "../../hooks/useAuth";
+import { loginSchema, type LoginFormData } from "../../schemas/auth.schema";
+
+import { useLogin } from "../../hooks/useAuth";
+import { useAuthContext } from "../../context/AuthContext";
+import { saveToken } from "../../utils/token";
 
 function LoginForm() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+
+  const { setUser } = useAuthContext();
+
+  const loginMutation = useLogin();
 
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +31,11 @@ function LoginForm() {
     try {
       setLoading(true);
 
-      await login(data.email, data.password);
+      const response = await loginMutation.mutateAsync(data);
+
+      saveToken(response.accessToken);
+
+      setUser(response.user);
 
       toast.success("Login Successful 🎉");
 
@@ -43,7 +53,7 @@ function LoginForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="bg-white shadow-xl rounded-xl p-8 w-full max-w-md"
     >
-      <h1 className="text-3xl font-bold mb-6 text-center">
+      <h1 className="mb-6 text-center text-3xl font-bold">
         Login
       </h1>
 
@@ -52,11 +62,11 @@ function LoginForm() {
           type="email"
           placeholder="Email"
           {...register("email")}
-          className="w-full border rounded-lg p-3"
+          className="w-full rounded-lg border p-3"
         />
 
         {errors.email && (
-          <p className="text-red-500 text-sm mt-1">
+          <p className="mt-1 text-sm text-red-500">
             {errors.email.message}
           </p>
         )}
@@ -67,11 +77,11 @@ function LoginForm() {
           type="password"
           placeholder="Password"
           {...register("password")}
-          className="w-full border rounded-lg p-3"
+          className="w-full rounded-lg border p-3"
         />
 
         {errors.password && (
-          <p className="text-red-500 text-sm mt-1">
+          <p className="mt-1 text-sm text-red-500">
             {errors.password.message}
           </p>
         )}
@@ -79,10 +89,12 @@ function LoginForm() {
 
       <button
         type="submit"
-        disabled={loading}
-        className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+        disabled={loading || loginMutation.isPending}
+        className="w-full rounded-lg bg-blue-600 py-3 text-white hover:bg-blue-700 disabled:opacity-50"
       >
-        {loading ? "Logging in..." : "Login"}
+        {loading || loginMutation.isPending
+          ? "Logging in..."
+          : "Login"}
       </button>
     </form>
   );
