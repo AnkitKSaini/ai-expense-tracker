@@ -27,7 +27,7 @@ function Sidebar({ open, onClose }: Props) {
   const links = [
     {
       name: "Dashboard",
-      path: "/",
+      path: "/dashboard",
       icon: LayoutDashboard,
     },
     {

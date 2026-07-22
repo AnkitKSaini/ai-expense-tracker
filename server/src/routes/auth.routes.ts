@@ -5,7 +5,10 @@ import {
   login,
   logout,
   me,
+  refreshToken,
 } from "../controllers/auth.controller.js";
+
+import authMiddleware from "../middleware/auth.middleware.js";
 
 import  validate  from "../middleware/validate.middleware.js";
 
@@ -13,8 +16,6 @@ import {
   registerSchema,
   loginSchema,
 } from "../validators/auth.validator.js";
-
-import authMiddleware from "../middleware/auth.middleware.js";
 
 const router = Router();
 
@@ -28,6 +29,11 @@ router.post(
   "/login",
   validate(loginSchema),
   login,
+);
+
+router.post(
+  "/refresh-token",
+  refreshToken,
 );
 
 router.post(

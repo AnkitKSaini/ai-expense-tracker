@@ -14,6 +14,10 @@ import { ApiError } from "../utils/ApiError.js";
 import { HTTP_STATUS } from "../constants/httpStatus.js";
 import { PASSWORD_SALT_ROUNDS } from "../constants/auth.js";
 
+import { env } from "../config/env.js";
+import jwt from "jsonwebtoken";
+
+
 export const registerService = async (
   data: RegisterDto,
 ): Promise<AuthResponse> => {
@@ -39,10 +43,14 @@ export const registerService = async (
     password: hashedPassword,
   });
 
-  const accessToken = generateAccessToken(user.id);
-  const refreshToken = generateRefreshToken(user.id);
+  const accessToken =
+    generateAccessToken(user.id);
+
+  const refreshToken =
+    generateRefreshToken(user.id);
 
   user.refreshToken = refreshToken;
+
   await user.save();
 
   return {
@@ -56,7 +64,8 @@ export const registerService = async (
     accessToken,
     refreshToken,
   };
-};
+}; 
+
 
 export const loginService = async (
   data: LoginDto,
@@ -85,10 +94,14 @@ export const loginService = async (
     );
   }
 
-  const accessToken = generateAccessToken(user.id);
-  const refreshToken = generateRefreshToken(user.id);
+  const accessToken =
+    generateAccessToken(user.id);
+
+  const refreshToken =
+    generateRefreshToken(user.id);
 
   user.refreshToken = refreshToken;
+
   await user.save();
 
   return {
@@ -101,5 +114,87 @@ export const loginService = async (
     },
     accessToken,
     refreshToken,
+  };
+}; 
+
+
+export const logoutService = async (
+  userId: string,
+): Promise<void> => {
+
+  await User.findByIdAndUpdate(
+    userId,
+    {
+      refreshToken: "",
+    },
+  );
+
+};
+
+
+export const getCurrentUser = async (
+  userId: string,
+) => {
+
+  const user = await User.findById(
+    userId,
+  ).select(
+    "-password -refreshToken",
+  );
+
+  if (!user) {
+    throw new ApiError(
+      HTTP_STATUS.NOT_FOUND,
+      "User not found",
+    );
+  }
+
+  return user;
+};
+
+
+export const refreshTokenService = async (
+  refreshToken: string,
+) => {
+
+  if (!refreshToken) {
+    throw new ApiError(
+      HTTP_STATUS.UNAUTHORIZED,
+      "Refresh token missing",
+    );
+  }
+
+  const decoded = jwt.verify(
+    refreshToken,
+    env.JWT_REFRESH_SECRET,
+  ) as {
+    userId: string;
+  };
+
+  const user = await User.findById(
+    decoded.userId,
+  );
+
+  if (!user) {
+    throw new ApiError(
+      HTTP_STATUS.UNAUTHORIZED,
+      "User not found",
+    );
+  }
+
+  if (
+    user.refreshToken !== refreshToken
+  ) {
+    throw new ApiError(
+      HTTP_STATUS.UNAUTHORIZED,
+      "Invalid refresh token",
+    );
+  }
+
+  const accessToken =
+    generateAccessToken(user.id);
+
+  return {
+    accessToken,
   };
 };

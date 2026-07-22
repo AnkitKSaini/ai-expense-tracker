@@ -1,5 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Mail, User } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
 
 import {
   AuthLayout,
@@ -9,7 +12,41 @@ import {
   SocialLogin,
 } from "../../components/auth";
 
+import { registerSchema } from "../../schemas/auth.schema";
+import type { RegisterFormData } from "../../types/auth";
+import { authService } from "../../services/auth.service";
+import { saveToken } from "../../utils/token";
+import { useAuthContext } from "../../context/AuthContext";
+
 function RegisterPage() {
+  const navigate = useNavigate();
+
+  const { setUser } = useAuthContext();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+  });
+
+  const onSubmit = async (data: RegisterFormData) => {
+    try {
+      const res = await authService.register(data);
+
+      saveToken(res.data.data.accessToken);
+
+      setUser(res.data.data.user);
+      
+      toast.success("Account created successfully");
+
+      navigate("/dashboard");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message ?? "Registration failed");
+    }
+  };
+
   return (
     <AuthLayout
       title="Create Account"
@@ -20,9 +57,9 @@ function RegisterPage() {
         subtitle="Create your AI Expense Tracker account."
       />
 
-      <form className="mt-8 space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
+        {/* Name */}
 
-        {/* Full Name */}
         <div>
           <label
             htmlFor="name"
@@ -41,17 +78,26 @@ function RegisterPage() {
               id="name"
               type="text"
               placeholder="Enter your full name"
+              {...register("name")}
               className="
                 w-full rounded-2xl border border-slate-300 bg-white/80
-                py-3 pl-12 pr-4 outline-none transition-all
-                focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20
-                dark:border-slate-700 dark:bg-slate-900/70
+                py-3 pl-12 pr-4 outline-none
+                focus:border-cyan-500
+                focus:ring-4
+                focus:ring-cyan-500/20
+                dark:border-slate-700
+                dark:bg-slate-900/70
               "
             />
           </div>
+
+          {errors.name && (
+            <p className="mt-2 text-sm text-red-500">{errors.name.message}</p>
+          )}
         </div>
 
         {/* Email */}
+
         <div>
           <label
             htmlFor="email"
@@ -70,30 +116,42 @@ function RegisterPage() {
               id="email"
               type="email"
               placeholder="Enter your email"
+              {...register("email")}
               className="
                 w-full rounded-2xl border border-slate-300 bg-white/80
-                py-3 pl-12 pr-4 outline-none transition-all
-                focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20
-                dark:border-slate-700 dark:bg-slate-900/70
+                py-3 pl-12 pr-4 outline-none
+                focus:border-cyan-500
+                focus:ring-4
+                focus:ring-cyan-500/20
+                dark:border-slate-700
+                dark:bg-slate-900/70
               "
             />
           </div>
+
+          {errors.email && (
+            <p className="mt-2 text-sm text-red-500">{errors.email.message}</p>
+          )}
         </div>
 
         <PasswordInput
           label="Password"
           placeholder="Create a password"
+          error={errors.password?.message}
+          {...register("password")}
         />
 
         <PasswordInput
           id="confirmPassword"
-          name="confirmPassword"
           label="Confirm Password"
           placeholder="Confirm your password"
+          error={errors.confirmPassword?.message}
+          {...register("confirmPassword")}
         />
 
         <button
           type="submit"
+          disabled={isSubmitting}
           className="
             w-full rounded-2xl
             bg-gradient-to-r
@@ -106,9 +164,11 @@ function RegisterPage() {
             transition-all
             hover:scale-[1.02]
             hover:shadow-xl
+            disabled:cursor-not-allowed
+            disabled:opacity-60
           "
         >
-          Create Account
+          {isSubmitting ? "Creating Account..." : "Create Account"}
         </button>
 
         <AuthDivider />
@@ -124,7 +184,6 @@ function RegisterPage() {
             Sign In
           </Link>
         </p>
-
       </form>
     </AuthLayout>
   );
