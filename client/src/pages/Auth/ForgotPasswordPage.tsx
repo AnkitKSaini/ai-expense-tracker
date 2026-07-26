@@ -1,12 +1,57 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Mail } from "lucide-react";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   AuthHeader,
   AuthLayout,
 } from "../../components/auth";
 
+import { TextInput } from "../../components/form";
+
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordFormData,
+} from "../../schemas/auth.schema";
+
+import { useForgotPassword } from "../../hooks/useAuth";
+
 function ForgotPasswordPage() {
+  const navigate = useNavigate();
+
+  const forgotPasswordMutation =
+    useForgotPassword();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } =
+    useForm<ForgotPasswordFormData>({
+      resolver: zodResolver(
+        forgotPasswordSchema,
+      ),
+    });
+
+  const onSubmit = async (
+    data: ForgotPasswordFormData,
+  ) => {
+    try {
+      await forgotPasswordMutation.mutateAsync(data);
+
+      navigate("/verify-otp", {
+        replace: true,
+        state: {
+          email: data.email,
+        },
+      });
+    } catch {
+      // Toast handled in hook
+    }
+  };
+
   return (
     <AuthLayout
       title="Forgot Password"
@@ -17,55 +62,29 @@ function ForgotPasswordPage() {
         subtitle="Enter your email and we'll send you a verification code."
       />
 
-      <form className="mt-8 space-y-6">
-
-        <div>
-          <label
-            htmlFor="email"
-            className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-300"
-          >
-            Email Address
-          </label>
-
-          <div className="relative">
-
-            <Mail
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-            />
-
-            <input
-              id="email"
-              type="email"
-              placeholder="Enter your email"
-              className="
-                w-full
-                rounded-2xl
-                border
-                border-slate-300
-                bg-white/80
-                py-3
-                pl-12
-                pr-4
-                outline-none
-                transition-all
-                focus:border-cyan-500
-                focus:ring-4
-                focus:ring-cyan-500/20
-                dark:border-slate-700
-                dark:bg-slate-900/70
-              "
-            />
-
-          </div>
-        </div>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-8 space-y-6"
+      >
+        <TextInput
+          id="email"
+          label="Email Address"
+          type="email"
+          placeholder="Enter your email"
+          icon={<Mail size={18} />}
+          registration={register("email")}
+          error={errors.email}
+        />
 
         <button
           type="submit"
+          disabled={
+            forgotPasswordMutation.isPending
+          }
           className="
             w-full
             rounded-2xl
-            bg-gradient-to-r
+            bg-linear-to-r
             from-blue-600
             via-cyan-500
             to-violet-600
@@ -75,9 +94,13 @@ function ForgotPasswordPage() {
             transition-all
             hover:scale-[1.02]
             hover:shadow-xl
+            disabled:cursor-not-allowed
+            disabled:opacity-70
           "
         >
-          Send Verification Code
+          {forgotPasswordMutation.isPending
+            ? "Sending..."
+            : "Send Verification Code"}
         </button>
 
         <p className="text-center text-sm text-slate-600 dark:text-slate-400">
@@ -89,7 +112,6 @@ function ForgotPasswordPage() {
             Sign In
           </Link>
         </p>
-
       </form>
     </AuthLayout>
   );

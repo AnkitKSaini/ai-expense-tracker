@@ -5,10 +5,18 @@ import {
 } from "react";
 import { Eye, EyeOff, Lock } from "lucide-react";
 
+import type {
+  FieldError,
+  UseFormRegisterReturn,
+} from "react-hook-form";
+
 interface PasswordInputProps
   extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  error?: string;
+
+  registration?: UseFormRegisterReturn;
+
+  error?: FieldError;
 }
 
 const PasswordInput = forwardRef<
@@ -20,6 +28,7 @@ const PasswordInput = forwardRef<
       id = "password",
       label = "Password",
       placeholder = "Enter your password",
+      registration,
       error,
       className = "",
       ...props
@@ -48,15 +57,12 @@ const PasswordInput = forwardRef<
             id={id}
             type={showPassword ? "text" : "password"}
             placeholder={placeholder}
+            {...registration}
+            {...props}
             className={`
               w-full
               rounded-2xl
               border
-              ${
-                error
-                  ? "border-red-500"
-                  : "border-slate-300 dark:border-slate-700"
-              }
               bg-white/80
               py-3
               pl-12
@@ -66,14 +72,15 @@ const PasswordInput = forwardRef<
               transition-all
               duration-300
               placeholder:text-slate-400
-              focus:border-cyan-500
-              focus:ring-4
-              focus:ring-cyan-500/20
               dark:bg-slate-900/70
               dark:text-white
+              ${
+                error
+                  ? "border-red-500 focus:ring-red-500/20"
+                  : "border-slate-300 dark:border-slate-700 focus:border-cyan-500 focus:ring-cyan-500/20"
+              }
               ${className}
             `}
-            {...props}
           />
 
           <button
@@ -101,7 +108,7 @@ const PasswordInput = forwardRef<
 
         {error && (
           <p className="mt-2 text-sm text-red-500">
-            {error}
+            {error.message}
           </p>
         )}
       </div>

@@ -17,7 +17,9 @@ function Navbar({ onMenuClick }: NavbarProps) {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    navigate("/login", {
+      replace: true,
+    });
   };
 
   return (
@@ -44,16 +46,13 @@ function Navbar({ onMenuClick }: NavbarProps) {
       {/* Right Actions */}
 
       <div className="flex items-center gap-4">
-
         <NotificationBell />
 
         <button
           onClick={toggleTheme}
           className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white transition-all duration-300 hover:scale-105 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
         >
-          <span className="text-lg">
-            {theme === "dark" ? "☀️" : "🌙"}
-          </span>
+          <span className="text-lg">{theme === "dark" ? "☀️" : "🌙"}</span>
         </button>
 
         <button
@@ -62,7 +61,6 @@ function Navbar({ onMenuClick }: NavbarProps) {
         >
           Logout
         </button>
-
       </div>
     </header>
   );

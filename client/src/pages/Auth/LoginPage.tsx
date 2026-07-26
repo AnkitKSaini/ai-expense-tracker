@@ -1,9 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { Mail } from "lucide-react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
 
 import {
   AuthLayout,
@@ -12,18 +15,21 @@ import {
   SocialLogin,
 } from "../../components/auth";
 
-import { TextInput, PasswordInput } from "../../components/form";
+import {
+  TextInput,
+  PasswordInput,
+} from "../../components/form";
 
-import { loginSchema, type LoginFormData } from "../../schemas/auth.schema";
+import {
+  loginSchema,
+  type LoginFormData,
+} from "../../schemas/auth.schema";
 
 import { useLogin } from "../../hooks/useAuth";
-import { saveToken } from "../../utils/token";
-import { useAuthContext } from "../../context/AuthContext";
 
 function LoginPage() {
   const navigate = useNavigate();
-
-  const { setUser } = useAuthContext();
+  const location = useLocation();
 
   const loginMutation = useLogin();
 
@@ -33,21 +39,24 @@ function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
+
+    defaultValues: {
+      email: location.state?.email ?? "",
+      password: "",
+    },
   });
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = async (
+    data: LoginFormData,
+  ) => {
     try {
-      const response = await loginMutation.mutateAsync(data);
+      await loginMutation.mutateAsync(data);
 
-      saveToken(response.accessToken);
-
-      setUser(response.user);
-
-      toast.success("Login Successful");
-
-      navigate("/dashboard");
+navigate("/dashboard", {
+  replace: true,
+});
     } catch {
-      toast.error("Invalid Email or Password");
+      // Toast handled by hook
     }
   };
 
@@ -61,7 +70,10 @@ function LoginPage() {
         subtitle="Access your AI Expense Tracker account."
       />
 
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-8 space-y-6"
+      >
         <TextInput
           id="email"
           label="Email Address"
@@ -81,7 +93,10 @@ function LoginPage() {
 
         <div className="flex items-center justify-between">
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" className="rounded border-slate-300" />
+            <input
+              type="checkbox"
+              className="rounded border-slate-300"
+            />
             Remember me
           </label>
 
@@ -99,7 +114,7 @@ function LoginPage() {
           className="
             w-full
             rounded-2xl
-            bg-gradient-to-r
+            bg-linear-to-r
             from-blue-600
             via-cyan-500
             to-violet-600
@@ -114,7 +129,9 @@ function LoginPage() {
             disabled:opacity-70
           "
         >
-          {loginMutation.isPending ? "Signing In..." : "Sign In"}
+          {loginMutation.isPending
+            ? "Signing In..."
+            : "Sign In"}
         </button>
 
         <AuthDivider />

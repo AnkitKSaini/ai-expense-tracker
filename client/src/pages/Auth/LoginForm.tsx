@@ -1,23 +1,18 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
 
-import { loginSchema, type LoginFormData } from "../../schemas/auth.schema";
+import {
+  loginSchema,
+  type LoginFormData,
+} from "../../schemas/auth.schema";
 
 import { useLogin } from "../../hooks/useAuth";
-import { useAuthContext } from "../../context/AuthContext";
-import { saveToken } from "../../utils/token";
 
 function LoginForm() {
   const navigate = useNavigate();
 
-  const { setUser } = useAuthContext();
-
   const loginMutation = useLogin();
-
-  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -27,31 +22,24 @@ function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = async (
+    data: LoginFormData,
+  ) => {
     try {
-      setLoading(true);
+      await loginMutation.mutateAsync(data);
 
-      const response = await loginMutation.mutateAsync(data);
-
-      saveToken(response.accessToken);
-
-      setUser(response.user);
-
-      toast.success("Login Successful 🎉");
-
-      navigate("/dashboard");
-    } catch (error) {
-      toast.error("Invalid Email or Password");
-      console.error(error);
-    } finally {
-      setLoading(false);
+ navigate("/dashboard", {
+  replace: true,
+});
+    } catch {
+      // Toast handled by hook
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-white shadow-xl rounded-xl p-8 w-full max-w-md"
+      className="w-full max-w-md rounded-xl bg-white p-8 shadow-xl"
     >
       <h1 className="mb-6 text-center text-3xl font-bold">
         Login
@@ -89,10 +77,20 @@ function LoginForm() {
 
       <button
         type="submit"
-        disabled={loading || loginMutation.isPending}
-        className="w-full rounded-lg bg-blue-600 py-3 text-white hover:bg-blue-700 disabled:opacity-50"
+        disabled={loginMutation.isPending}
+        className="
+          w-full
+          rounded-lg
+          bg-blue-600
+          py-3
+          text-white
+          transition-colors
+          hover:bg-blue-700
+          disabled:cursor-not-allowed
+          disabled:opacity-50
+        "
       >
-        {loading || loginMutation.isPending
+        {loginMutation.isPending
           ? "Logging in..."
           : "Login"}
       </button>

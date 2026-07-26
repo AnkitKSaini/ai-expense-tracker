@@ -16,7 +16,10 @@ export interface IUser extends Document {
   refreshToken?: string;
 
   otp?: string;
-  otpExpiry?: Date;
+  otpExpiry?: Date | undefined;
+
+  passwordResetToken?: string;
+  passwordResetTokenExpiry?: Date | undefined;
 
   createdAt: Date;
   updatedAt: Date;
@@ -79,6 +82,15 @@ const userSchema = new Schema<IUser>(
     },
 
     otpExpiry: {
+      type: Date,
+    },
+
+    passwordResetToken: {
+      type: String,
+      default: "",
+    },
+
+    passwordResetTokenExpiry: {
       type: Date,
     },
   },

@@ -1,9 +1,21 @@
-import Bill from "../models/Bill.js";
+import Bill, {
+  type BillDocument,
+} from "../models/Bill.js";
 import Expense from "../models/Expense.js";
 import { createNotification } from "./notification.service.js";
 
+type CreateBillData = Omit<
+  BillDocument,
+  | "user"
+  | "paidAt"
+  | "createdAt"
+  | "updatedAt"
+>;
+
+type UpdateBillData = Partial<CreateBillData>;
+
 export async function createBill(
-  data: any,
+  data: CreateBillData,
   userId: string,
 ) {
   return Bill.create({
@@ -24,7 +36,7 @@ export async function getBills(
 
 export async function updateBill(
   id: string,
-  data: any,
+  data: UpdateBillData,
   userId: string,
 ) {
   return Bill.findOneAndUpdate(
@@ -72,35 +84,24 @@ export async function payBill(
   await bill.save();
 
   await createNotification(
-  {
-    title: "Bill Paid",
-
-    message: `${bill.title} bill paid successfully.`,
-
-    type: "Bill",
-
-    priority: "Medium",
-
-    actionUrl: "/bills",
-  },
-
-  userId,
-);
+    {
+      title: "Bill Paid",
+      message: `${bill.title} bill paid successfully.`,
+      type: "Bill",
+      priority: "Medium",
+      actionUrl: "/bills",
+    },
+    userId,
+  );
 
   if (bill.autoCreateExpense) {
     await Expense.create({
       title: bill.title,
-
       amount: bill.amount,
-
       category: bill.category,
-
       type: "Expense",
-
       date: new Date(),
-
       notes: `Auto-created from Bill: ${bill.title}`,
-
       user: userId,
     });
   }

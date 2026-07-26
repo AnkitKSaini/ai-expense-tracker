@@ -24,11 +24,22 @@ export const env = {
 
   JWT_REFRESH_SECRET: getEnv("JWT_REFRESH_SECRET"),
 
-  ACCESS_TOKEN_EXPIRES:
-    (process.env.ACCESS_TOKEN_EXPIRES || "15m") as SignOptions["expiresIn"],
+  JWT_PASSWORD_RESET_SECRET: getEnv("JWT_PASSWORD_RESET_SECRET"),
 
-  REFRESH_TOKEN_EXPIRES:
-    (process.env.REFRESH_TOKEN_EXPIRES || "7d") as SignOptions["expiresIn"],
+  ACCESS_TOKEN_EXPIRES: (process.env.ACCESS_TOKEN_EXPIRES ||
+    "15m") as SignOptions["expiresIn"],
+
+  REFRESH_TOKEN_EXPIRES: (process.env.REFRESH_TOKEN_EXPIRES ||
+    "7d") as SignOptions["expiresIn"],
+
+  PASSWORD_RESET_TOKEN_EXPIRES: (process.env.PASSWORD_RESET_TOKEN_EXPIRES ||
+    "15m") as SignOptions["expiresIn"],
 
   GEMINI_API_KEY: getEnv("GEMINI_API_KEY"),
+
+  MAIL_HOST: getEnv("MAIL_HOST"),
+  MAIL_PORT: getEnv("MAIL_PORT"),
+  MAIL_USER: getEnv("MAIL_USER"),
+  MAIL_PASS: getEnv("MAIL_PASS"),
+  MAIL_FROM: getEnv("MAIL_FROM"),
 };

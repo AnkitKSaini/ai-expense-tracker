@@ -23,3 +23,22 @@ export interface AuthResponse {
   accessToken: string;
   refreshToken?: string;
 }
+
+export interface ForgotPasswordFormData {
+  email: string;
+}
+
+export interface VerifyOTPFormData {
+  email: string;
+  otp: string;
+}
+
+export interface ResetPasswordFormData {
+  password: string;
+  confirmPassword: string;
+}
+
+export interface VerifyOTPResponse {
+  resetToken: string;
+}
+

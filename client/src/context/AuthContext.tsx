@@ -1,13 +1,15 @@
 import {
   createContext,
+  useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
-  useEffect,
   type ReactNode,
 } from "react";
 
 import api from "../api/api";
+import type { ApiResponse } from "../types/api";
 
 import type { User } from "../types/auth";
 
@@ -36,31 +38,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const [loading, setLoading] = useState(true);
 
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
+    setLoading(true);
+
     try {
       const token = getToken();
 
       if (!token) {
-        setLoading(false);
+        setUser(null);
         return;
       }
 
-      const res = await api.get("/auth/me");
-
+      const res = await api.get<ApiResponse<User>>("/auth/me");
       setUser(res.data.data);
-    } catch (error) {
+    } catch {
       removeToken();
       setUser(null);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [checkAuth]);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       await api.post("/auth/logout");
     } catch {
@@ -68,19 +71,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } finally {
       removeToken();
       setUser(null);
+      setLoading(false);
     }
-  };
+  }, []);
 
   const value = useMemo(
     () => ({
       user,
       loading,
       isAuthenticated: !!user,
+
       setUser,
+
       checkAuth,
+
       logout,
     }),
-    [user, loading],
+    [user, loading, checkAuth, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,12 +1,21 @@
-import RecurringTransaction from "../models/RecurringTransaction.js";
+import RecurringTransaction, {
+  type RecurringTransactionDocument,
+} from "../models/RecurringTransaction.js";
 
-import type { AuthRequest } from "../middleware/auth.middleware.js";
+import type { AuthRequest } from "../types/auth.types.js";
 
 import { calculateNextRun } from "../utils/recurringScheduler.js";
 
 import Expense from "../models/Expense.js";
 
 import { createNotification } from "./notification.service.js";
+
+type UpdateRecurringData = Partial<
+  Omit<
+    RecurringTransactionDocument,
+    "user" | "createdAt" | "updatedAt"
+  >
+>;
 
 export async function createRecurring(
   req: AuthRequest,
@@ -39,7 +48,7 @@ export async function getRecurring(
 
 export async function updateRecurring(
   id: string,
-  body: any,
+  body: UpdateRecurringData,
   userId: string,
 ) {
   return RecurringTransaction.findOneAndUpdate(
@@ -64,8 +73,7 @@ export async function deleteRecurring(
   });
 }
 
-
- export async function processRecurringTransaction(
+export async function processRecurringTransaction(
   recurringId: string,
 ) {
   const recurring =
@@ -86,8 +94,6 @@ export async function deleteRecurring(
     return recurring;
   }
 
-  // Create Expense
-
   const transaction =
     await Expense.create({
       title: recurring.title,
@@ -104,8 +110,6 @@ export async function deleteRecurring(
 
       user: recurring.user,
     });
-
-  // Notification
 
   await createNotification(
     {

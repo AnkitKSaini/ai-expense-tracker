@@ -1,48 +1,59 @@
 import api from "../api/api";
 
+import type { ApiResponse } from "../types/api";
 import type { RecurringTransaction } from "../types/recurring";
 
 export const recurringService = {
-  getAll: async () => {
-    const res = await api.get("/recurring");
+  getAll: async (): Promise<RecurringTransaction[]> => {
+    const { data } =
+      await api.get<ApiResponse<RecurringTransaction[]>>(
+        "/recurring",
+      );
 
-    return res.data.data as RecurringTransaction[];
+    return data.data;
   },
 
   create: async (
-    data: Partial<RecurringTransaction>,
-  ) => {
-    const res = await api.post(
-      "/recurring",
-      data,
-    );
+    recurring: Partial<RecurringTransaction>,
+  ): Promise<RecurringTransaction> => {
+    const { data } =
+      await api.post<ApiResponse<RecurringTransaction>>(
+        "/recurring",
+        recurring,
+      );
 
-    return res.data.data;
+    return data.data;
   },
 
   update: async (
     id: string,
-    data: Partial<RecurringTransaction>,
-  ) => {
-    const res = await api.put(
-      `/recurring/${id}`,
-      data,
-    );
+    recurring: Partial<RecurringTransaction>,
+  ): Promise<RecurringTransaction> => {
+    const { data } =
+      await api.put<ApiResponse<RecurringTransaction>>(
+        `/recurring/${id}`,
+        recurring,
+      );
 
-    return res.data.data;
+    return data.data;
   },
 
-  delete: async (id: string) => {
+  delete: async (
+    id: string,
+  ): Promise<void> => {
     await api.delete(
       `/recurring/${id}`,
     );
   },
 
-  run: async (id: string) => {
-    const res = await api.post(
-      `/recurring/${id}/run`,
-    );
+  run: async (
+    id: string,
+  ): Promise<RecurringTransaction> => {
+    const { data } =
+      await api.post<ApiResponse<RecurringTransaction>>(
+        `/recurring/${id}/run`,
+      );
 
-    return res.data.data;
+    return data.data;
   },
 };

@@ -1,22 +1,73 @@
 import api from "../api/api";
+
+import type { ApiResponse } from "../types/api";
+
 import type {
-  RegisterFormData,
-  LoginFormData,
+  User,
+  AuthResponse,
+  VerifyOTPResponse,
 } from "../types/auth";
+
+import type {
+  LoginFormData,
+  RegisterFormData,
+  ForgotPasswordFormData,
+  VerifyOTPFormData,
+} from "../schemas/auth.schema";
 
 export const authService = {
   register: (data: RegisterFormData) =>
-    api.post("/auth/register", data),
+    api.post<ApiResponse<AuthResponse>>(
+      "/auth/register",
+      data,
+    ),
 
   login: (data: LoginFormData) =>
-    api.post("/auth/login", data),
-
-  me: () =>
-    api.get("/auth/me"),
+    api.post<ApiResponse<AuthResponse>>(
+      "/auth/login",
+      data,
+    ),
 
   logout: () =>
-    api.post("/auth/logout"),
+    api.post<ApiResponse<null>>(
+      "/auth/logout",
+    ),
+
+  me: () =>
+    api.get<ApiResponse<User>>(
+      "/auth/me",
+    ),
 
   refreshToken: () =>
-    api.post("/auth/refresh-token"),
+    api.post<ApiResponse<AuthResponse>>(
+      "/auth/refresh-token",
+    ),
+
+  forgotPassword: (
+    data: ForgotPasswordFormData,
+  ) =>
+    api.post<ApiResponse<null>>(
+      "/auth/forgot-password",
+      data,
+    ),
+
+  verifyOTP: (
+    data: VerifyOTPFormData,
+  ) =>
+    api.post<ApiResponse<VerifyOTPResponse>>(
+      "/auth/verify-otp",
+      data,
+    ),
+
+ resetPassword: (
+  resetToken: string,
+  password: string,
+) =>
+  api.post<ApiResponse<null>>(
+    "/auth/reset-password",
+    {
+      resetToken,
+      password,
+    },
+  ),
 };

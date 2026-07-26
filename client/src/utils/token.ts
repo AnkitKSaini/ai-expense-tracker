@@ -11,3 +11,8 @@ export const getToken = () => {
 export const removeToken = () => {
   localStorage.removeItem(TOKEN_KEY);
 };
+
+export const clearAuth = () => {
+  localStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem("resetToken");
+};

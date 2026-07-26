@@ -1,7 +1,15 @@
-import Notification from "../models/Notification.js";
+import Notification, {
+  type NotificationDocument,
+} from "../models/Notification.js";
+
+interface CreateNotificationData
+  extends Omit<
+    NotificationDocument,
+    "user" | "isRead" | "createdAt" | "updatedAt"
+  > {}
 
 export async function createNotification(
-  data: any,
+  data: CreateNotificationData,
   userId: string,
 ) {
   return Notification.create({

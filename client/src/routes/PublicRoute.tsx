@@ -1,11 +1,15 @@
 import { Navigate, Outlet } from "react-router-dom";
 
-import { getToken } from "../utils/token";
+import { useAuthContext } from "../context/AuthContext";
 
 function PublicRoute() {
-  const token = getToken();
+  const { loading, isAuthenticated } = useAuthContext();
 
-  if (token) {
+  if (loading) {
+    return null;
+  }
+
+  if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
 

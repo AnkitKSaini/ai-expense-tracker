@@ -1,8 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
+import toast from "react-hot-toast";
 
 import * as expenseService from "../services/expense.service";
 
-import toast from "react-hot-toast";
+import type { UpdateExpenseDto } from "../types/expense";
 
 export function useExpenses(
   search = "",
@@ -15,16 +21,22 @@ export function useExpenses(
 
   // Get Expenses
   const expensesQuery = useQuery({
-    queryKey: ["expenses", search, category, sort, page, limit],
-    queryFn: async () => {
-      return await expenseService.getExpenses(
+    queryKey: [
+      "expenses",
+      search,
+      category,
+      sort,
+      page,
+      limit,
+    ],
+    queryFn: () =>
+      expenseService.getExpenses(
         search,
         category,
         sort,
         page,
         limit,
-      );
-    },
+      ),
   });
 
   // Create Expense
@@ -50,8 +62,14 @@ export function useExpenses(
 
   // Update Expense
   const updateMutation = useMutation({
-    mutationFn: ({ id, expense }: { id: string; expense: any }) =>
-      expenseService.updateExpense(id, expense),
+    mutationFn: ({
+      id,
+      expense,
+    }: {
+      id: string;
+      expense: UpdateExpenseDto;
+    }) => expenseService.updateExpense(id, expense),
+
     onSuccess: () => {
       toast.success("Expense updated successfully");
 
@@ -91,23 +109,30 @@ export function useExpenses(
   });
 
   return {
-    expenses: expensesQuery.data?.data?.expenses ?? [],
+    expenses:
+      expensesQuery.data?.data?.expenses ?? [],
 
-    total: expensesQuery.data?.data?.total ?? 0,
+    total:
+      expensesQuery.data?.data?.total ?? 0,
 
-    page: expensesQuery.data?.data?.page ?? 1,
+    page:
+      expensesQuery.data?.data?.page ?? 1,
 
-    totalPages: expensesQuery.data?.data?.totalPages ?? 1,
+    totalPages:
+      expensesQuery.data?.data?.totalPages ?? 1,
 
     loading: expensesQuery.isPending,
 
     error: expensesQuery.error,
 
-    createExpense: createMutation.mutateAsync,
+    createExpense:
+      createMutation.mutateAsync,
 
-    updateExpense: updateMutation.mutateAsync,
+    updateExpense:
+      updateMutation.mutateAsync,
 
-    deleteExpense: deleteMutation.mutateAsync,
+    deleteExpense:
+      deleteMutation.mutateAsync,
 
     refetch: expensesQuery.refetch,
   };

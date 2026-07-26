@@ -1,43 +1,46 @@
 import api from "../api/api";
 
+import type { ApiResponse } from "../types/api";
 import type { Bill } from "../types/bill";
 
 export const billService = {
-  getAll: async () => {
-    const res =
-      await api.get("/bills");
+  getAll: async (): Promise<Bill[]> => {
+    const { data } =
+      await api.get<ApiResponse<Bill[]>>(
+        "/bills",
+      );
 
-    return res.data.data as Bill[];
+    return data.data;
   },
 
   create: async (
-    data: Partial<Bill>,
-  ) => {
-    const res =
-      await api.post(
+    bill: Partial<Bill>,
+  ): Promise<Bill> => {
+    const { data } =
+      await api.post<ApiResponse<Bill>>(
         "/bills",
-        data,
+        bill,
       );
 
-    return res.data.data;
+    return data.data;
   },
 
   update: async (
     id: string,
-    data: Partial<Bill>,
-  ) => {
-    const res =
-      await api.put(
+    bill: Partial<Bill>,
+  ): Promise<Bill> => {
+    const { data } =
+      await api.put<ApiResponse<Bill>>(
         `/bills/${id}`,
-        data,
+        bill,
       );
 
-    return res.data.data;
+    return data.data;
   },
 
   delete: async (
     id: string,
-  ) => {
+  ): Promise<void> => {
     await api.delete(
       `/bills/${id}`,
     );
@@ -45,12 +48,12 @@ export const billService = {
 
   pay: async (
     id: string,
-  ) => {
-    const res =
-      await api.post(
+  ): Promise<Bill> => {
+    const { data } =
+      await api.post<ApiResponse<Bill>>(
         `/bills/${id}/pay`,
       );
 
-    return res.data.data;
+    return data.data;
   },
 };

@@ -5,8 +5,15 @@ import {
   Landmark,
 } from "lucide-react";
 
+interface ReportOverviewData {
+  totalExpense: number;
+  totalBudget: number;
+  totalGoals: number;
+  totalInvestment: number;
+}
+
 interface Props {
-  report: any;
+  report: ReportOverviewData;
 }
 
 function ReportOverview({

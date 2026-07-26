@@ -1,10 +1,22 @@
-import axios from "axios";
-import { getToken, saveToken, removeToken } from "../utils/token";
+import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
+
+import type { ApiResponse } from "../types/api";
+import type { AuthResponse } from "../types/auth";
+
+import { getToken, saveToken, clearAuth } from "../utils/token";
+
+interface RetryAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
+
+let isRefreshing = false;
+
+let refreshPromise: Promise<string> | null = null;
 
 api.interceptors.request.use((config) => {
   const token = getToken();
@@ -16,34 +28,64 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-
 api.interceptors.response.use(
   (response) => response,
 
-  async (error) => {
-    const originalRequest = error.config;
+  async (error: AxiosError) => {
+    const originalRequest = error.config as RetryAxiosRequestConfig;
+
+    const authRoutes = [
+      "/auth/login",
+      "/auth/register",
+      "/auth/forgot-password",
+      "/auth/verify-otp",
+      "/auth/reset-password",
+      "/auth/refresh-token",
+    ];
+
+    const isAuthRoute = authRoutes.some((route) =>
+      originalRequest?.url?.includes(route),
+    );
 
     if (
       error.response?.status === 401 &&
-      !originalRequest._retry
+      !originalRequest?._retry &&
+      !isAuthRoute
     ) {
       originalRequest._retry = true;
 
       try {
-        const res = await api.post("/auth/refresh-token");
+        if (!isRefreshing) {
+          isRefreshing = true;
 
-        const accessToken = res.data.data.accessToken;
+          refreshPromise = api
+            .post<ApiResponse<AuthResponse>>("/auth/refresh-token")
+            .then((res) => {
+              const token = res.data.data.accessToken;
 
-        saveToken(accessToken);
+              saveToken(token);
 
-        originalRequest.headers.Authorization =
-          `Bearer ${accessToken}`;
+              return token;
+            })
+            .finally(() => {
+              isRefreshing = false;
+              refreshPromise = null;
+            });
+        }
+
+        const accessToken = await refreshPromise!;
+
+        if (originalRequest.headers) {
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        }
 
         return api(originalRequest);
-      } catch {
-        removeToken();
+      } catch (refreshError) {
+        clearAuth();
 
-        window.location.href = "/login";
+        window.location.replace("/login");
+
+        return Promise.reject(refreshError);
       }
     }
 

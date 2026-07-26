@@ -11,23 +11,58 @@ interface Props {
   onClose: () => void;
 }
 
-function RecurringForm({ open, recurring, onClose }: Props) {
-  const { register, handleSubmit, reset } = useForm();
-  const { createRecurring, updateRecurring } = useRecurring();
+type RecurringFormData = Omit<
+  RecurringTransaction,
+  "_id" | "user" | "nextRun"
+>;
+
+function RecurringForm({
+  open,
+  recurring,
+  onClose,
+}: Props) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+  } = useForm<RecurringFormData>();
+
+  const {
+    createRecurring,
+    updateRecurring,
+  } = useRecurring();
 
   useEffect(() => {
     if (recurring) {
-      reset(recurring);
+      reset({
+        title: recurring.title,
+        amount: recurring.amount,
+        type: recurring.type,
+        category: recurring.category,
+        frequency: recurring.frequency,
+        startDate: recurring.startDate,
+        endDate: recurring.endDate,
+        isActive: recurring.isActive,
+        notes: recurring.notes,
+      });
     } else {
       reset({
+        title: "",
+        amount: 0,
         type: "Expense",
+        category: "",
         frequency: "Monthly",
+        startDate: "",
+        endDate: "",
         isActive: true,
+        notes: "",
       });
     }
   }, [recurring, reset]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (
+    data: RecurringFormData,
+  ) => {
     try {
       if (recurring) {
         await updateRecurring({
@@ -38,9 +73,8 @@ function RecurringForm({ open, recurring, onClose }: Props) {
         await createRecurring(data);
       }
 
-      onClose();
-
       reset();
+      onClose();
     } catch (error) {
       console.error(error);
     }
@@ -56,15 +90,19 @@ function RecurringForm({ open, recurring, onClose }: Props) {
         <div className="flex items-center justify-between border-b p-8 dark:border-gray-800">
           <div>
             <h2 className="text-2xl font-bold dark:text-white">
-              {recurring ? "Edit Recurring" : "New Recurring"}
+              {recurring
+                ? "Edit Recurring"
+                : "New Recurring"}
             </h2>
 
             <p className="mt-1 text-gray-500">
-              Automate your recurring transactions.
+              Automate your recurring
+              transactions.
             </p>
           </div>
 
           <button
+            type="button"
             onClick={onClose}
             className="rounded-xl p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
           >
@@ -76,7 +114,6 @@ function RecurringForm({ open, recurring, onClose }: Props) {
           onSubmit={handleSubmit(onSubmit)}
           className="max-h-[65vh] overflow-y-auto overscroll-contain p-8"
         >
-          {" "}
           <div className="grid gap-5 md:grid-cols-2">
             <input
               {...register("title")}
@@ -86,7 +123,9 @@ function RecurringForm({ open, recurring, onClose }: Props) {
 
             <input
               type="number"
-              {...register("amount")}
+              {...register("amount", {
+                valueAsNumber: true,
+              })}
               placeholder="Amount"
               className="rounded-xl border p-3 dark:bg-gray-800"
             />
@@ -95,8 +134,12 @@ function RecurringForm({ open, recurring, onClose }: Props) {
               {...register("type")}
               className="rounded-xl border p-3 dark:bg-gray-800"
             >
-              <option>Expense</option>
-              <option>Income</option>
+              <option value="Expense">
+                Expense
+              </option>
+              <option value="Income">
+                Income
+              </option>
             </select>
 
             <input
@@ -109,11 +152,21 @@ function RecurringForm({ open, recurring, onClose }: Props) {
               {...register("frequency")}
               className="rounded-xl border p-3 dark:bg-gray-800"
             >
-              <option>Daily</option>
-              <option>Weekly</option>
-              <option>Monthly</option>
-              <option>Quarterly</option>
-              <option>Yearly</option>
+              <option value="Daily">
+                Daily
+              </option>
+              <option value="Weekly">
+                Weekly
+              </option>
+              <option value="Monthly">
+                Monthly
+              </option>
+              <option value="Quarterly">
+                Quarterly
+              </option>
+              <option value="Yearly">
+                Yearly
+              </option>
             </select>
 
             <input
@@ -129,21 +182,30 @@ function RecurringForm({ open, recurring, onClose }: Props) {
             />
 
             <select
-              {...register("isActive")}
+              {...register("isActive", {
+                setValueAs: (value) =>
+                  value === "true",
+              })}
               className="rounded-xl border p-3 dark:bg-gray-800"
             >
-              <option value="true">Active</option>
+              <option value="true">
+                Active
+              </option>
 
-              <option value="false">Inactive</option>
+              <option value="false">
+                Inactive
+              </option>
             </select>
           </div>
+
           <textarea
             {...register("notes")}
             rows={4}
             placeholder="Notes"
-            className="w-full rounded-xl border p-3 dark:bg-gray-800"
+            className="mt-5 w-full rounded-xl border p-3 dark:bg-gray-800"
           />
-          <div className="sticky bottom-0 flex justify-end gap-3 border-t bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+
+          <div className="sticky bottom-0 mt-6 flex justify-end gap-3 border-t bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
             <button
               type="button"
               onClick={onClose}
@@ -156,7 +218,9 @@ function RecurringForm({ open, recurring, onClose }: Props) {
               type="submit"
               className="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
             >
-              {recurring ? "Update" : "Create"}
+              {recurring
+                ? "Update"
+                : "Create"}
             </button>
           </div>
         </form>

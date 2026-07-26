@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, User } from "lucide-react";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
 
 import {
   AuthLayout,
@@ -12,38 +12,39 @@ import {
   SocialLogin,
 } from "../../components/auth";
 
-import { registerSchema } from "../../schemas/auth.schema";
-import type { RegisterFormData } from "../../types/auth";
-import { authService } from "../../services/auth.service";
-import { saveToken } from "../../utils/token";
-import { useAuthContext } from "../../context/AuthContext";
+import {
+  registerSchema,
+  type RegisterFormData,
+} from "../../schemas/auth.schema";
+
+import { useRegister } from "../../hooks/useAuth";
 
 function RegisterPage() {
   const navigate = useNavigate();
 
-  const { setUser } = useAuthContext();
+  const registerMutation = useRegister();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (data: RegisterFormData) => {
+  const onSubmit = async (
+    data: RegisterFormData,
+  ) => {
     try {
-      const res = await authService.register(data);
+      await registerMutation.mutateAsync(
+        data,
+      );
 
-      saveToken(res.data.data.accessToken);
-
-      setUser(res.data.data.user);
-      
-      toast.success("Account created successfully");
-
-      navigate("/dashboard");
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message ?? "Registration failed");
+      navigate("/dashboard", {
+        replace: true,
+      });
+    } catch {
+      // Toast handled in hook
     }
   };
 
@@ -57,9 +58,11 @@ function RegisterPage() {
         subtitle="Create your AI Expense Tracker account."
       />
 
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-8 space-y-6"
+      >
         {/* Name */}
-
         <div>
           <label
             htmlFor="name"
@@ -80,8 +83,16 @@ function RegisterPage() {
               placeholder="Enter your full name"
               {...register("name")}
               className="
-                w-full rounded-2xl border border-slate-300 bg-white/80
-                py-3 pl-12 pr-4 outline-none
+                w-full
+                rounded-2xl
+                border
+                border-slate-300
+                bg-white/80
+                py-3
+                pl-12
+                pr-4
+                outline-none
+                transition-all
                 focus:border-cyan-500
                 focus:ring-4
                 focus:ring-cyan-500/20
@@ -92,18 +103,19 @@ function RegisterPage() {
           </div>
 
           {errors.name && (
-            <p className="mt-2 text-sm text-red-500">{errors.name.message}</p>
+            <p className="mt-2 text-sm text-red-500">
+              {errors.name.message}
+            </p>
           )}
         </div>
 
         {/* Email */}
-
         <div>
           <label
             htmlFor="email"
             className="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-300"
           >
-            Email
+            Email Address
           </label>
 
           <div className="relative">
@@ -118,8 +130,16 @@ function RegisterPage() {
               placeholder="Enter your email"
               {...register("email")}
               className="
-                w-full rounded-2xl border border-slate-300 bg-white/80
-                py-3 pl-12 pr-4 outline-none
+                w-full
+                rounded-2xl
+                border
+                border-slate-300
+                bg-white/80
+                py-3
+                pl-12
+                pr-4
+                outline-none
+                transition-all
                 focus:border-cyan-500
                 focus:ring-4
                 focus:ring-cyan-500/20
@@ -130,31 +150,37 @@ function RegisterPage() {
           </div>
 
           {errors.email && (
-            <p className="mt-2 text-sm text-red-500">{errors.email.message}</p>
+            <p className="mt-2 text-sm text-red-500">
+              {errors.email.message}
+            </p>
           )}
         </div>
 
+        {/* Password */}
         <PasswordInput
           label="Password"
           placeholder="Create a password"
-          error={errors.password?.message}
-          {...register("password")}
+          registration={register("password")}
+          error={errors.password}
         />
 
+        {/* Confirm Password */}
         <PasswordInput
           id="confirmPassword"
+          name="confirmPassword"
           label="Confirm Password"
           placeholder="Confirm your password"
-          error={errors.confirmPassword?.message}
-          {...register("confirmPassword")}
+          registration={register("confirmPassword")}
+          error={errors.confirmPassword}
         />
 
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={registerMutation.isPending}
           className="
-            w-full rounded-2xl
-            bg-gradient-to-r
+            w-full
+            rounded-2xl
+            bg-linear-to-r
             from-blue-600
             via-cyan-500
             to-violet-600
@@ -162,13 +188,16 @@ function RegisterPage() {
             font-semibold
             text-white
             transition-all
+            duration-300
             hover:scale-[1.02]
             hover:shadow-xl
             disabled:cursor-not-allowed
             disabled:opacity-60
           "
         >
-          {isSubmitting ? "Creating Account..." : "Create Account"}
+          {registerMutation.isPending
+            ? "Creating Account..."
+            : "Create Account"}
         </button>
 
         <AuthDivider />
