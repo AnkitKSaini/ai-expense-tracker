@@ -10,9 +10,10 @@ const startServer = async () => {
       console.log("");
       console.log("====================================");
       console.log("🚀 AI Expense Tracker API");
-      console.log(`🌐 Server : http://localhost:${env.PORT}`);
-      console.log(`🛢️ Database : Connected`);
+      console.log(`✅ Server Started`);
       console.log(`🌍 Environment : ${env.NODE_ENV}`);
+      console.log(`🛢️ Database : Connected`);
+      console.log(`🔌 Port : ${env.PORT}`);
       console.log("====================================");
       console.log("");
     });
