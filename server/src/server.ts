@@ -7,15 +7,14 @@ const startServer = async () => {
     await connectDatabase();
 
     app.listen(env.PORT, () => {
-      console.log("");
-      console.log("====================================");
+      console.clear();
+
+      console.log("======================================");
       console.log("🚀 AI Expense Tracker API");
-      console.log(`✅ Server Started`);
       console.log(`🌍 Environment : ${env.NODE_ENV}`);
-      console.log(`🛢️ Database : Connected`);
-      console.log(`🔌 Port : ${env.PORT}`);
-      console.log("====================================");
-      console.log("");
+      console.log(`🚪 Port        : ${env.PORT}`);
+      console.log("🛢️ Database    : Connected");
+      console.log("======================================");
     });
   } catch (error) {
     console.error("❌ Failed to start server");
