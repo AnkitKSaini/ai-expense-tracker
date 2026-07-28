@@ -62,7 +62,7 @@ dark:text-blue-300
               items-center
               gap-2
               rounded-2xl
-              bg-gradient-to-r
+              bg-linear-to-r
               from-blue-600
               via-cyan-500
               to-violet-500

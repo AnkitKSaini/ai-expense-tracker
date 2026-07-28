@@ -8,5 +8,24 @@ export default defineConfig({
     tailwindcss(),
   ],
 
-  
+  build: {
+    chunkSizeWarningLimit: 1000,
+
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("react")) return "react";
+            if (id.includes("react-router")) return "router";
+            if (id.includes("@tanstack/react-query")) return "query";
+            if (id.includes("recharts")) return "charts";
+            if (id.includes("lucide-react")) return "icons";
+            if (id.includes("framer-motion")) return "animations";
+
+            return "vendor";
+          }
+        },
+      },
+    },
+  },
 });

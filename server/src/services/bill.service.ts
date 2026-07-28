@@ -46,7 +46,7 @@ export async function updateBill(
     },
     data,
     {
-      new: true,
+      returnDocument: "after",
     },
   );
 }

@@ -2,9 +2,8 @@ import type {
   Response,
 } from "express";
 
-import type {
-  AuthRequest,
-} from "../middleware/auth.middleware.js";
+import type { AuthRequest } from "../types/auth.types.js";
+
 
 import {
   createBill,
@@ -100,7 +99,7 @@ export async function updateBillController(
 
     const bill =
       await updateBill(
-        req.params.id,
+        String(req.params.id),
         req.body,
         req.user.id,
       );
@@ -137,7 +136,7 @@ export async function deleteBillController(
     }
 
     await deleteBill(
-      req.params.id,
+      String(req.params.id),
       req.user.id,
     );
 
@@ -173,7 +172,7 @@ export async function payBillController(
     }
 
     const bill = await payBill(
-      req.params.id,
+      String(req.params.id),
       req.user.id,
     );
 

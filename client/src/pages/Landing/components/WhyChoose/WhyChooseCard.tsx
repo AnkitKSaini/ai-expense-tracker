@@ -25,11 +25,11 @@ function WhyChooseCard({
     >
       {/* Background Glow */}
       <div
-        className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-10`}
+        className={`absolute inset-0 bg-linear-to-br ${gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-10`}
       />
 
       <div
-        className={`inline-flex rounded-2xl bg-gradient-to-br ${gradient} p-4 text-white shadow-lg`}
+        className={`inline-flex rounded-2xl bg-linear-to-br ${gradient} p-4 text-white shadow-lg`}
       >
         <Icon size={28} />
       </div>

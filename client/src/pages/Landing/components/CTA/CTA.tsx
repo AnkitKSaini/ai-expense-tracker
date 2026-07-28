@@ -19,7 +19,7 @@ function CTA() {
       <div className="absolute left-0 top-10 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
       <div className="absolute right-0 bottom-10 h-80 w-80 rounded-full bg-violet-500/20 blur-3xl" />
 
-      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[40px] border border-blue-200/30 bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 px-8 py-20 text-center text-white shadow-[0_25px_80px_rgba(37,99,235,0.35)] md:px-16">
+      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[40px] border border-blue-200/30 bg-linear-to-br from-blue-600 via-blue-700 to-cyan-600 px-8 py-20 text-center text-white shadow-[0_25px_80px_rgba(37,99,235,0.35)] md:px-16">
         {/* Badge */}
         <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2 backdrop-blur-md">
           <Sparkles size={16} className="text-yellow-300" />
@@ -31,7 +31,7 @@ function CTA() {
         {/* Heading */}
         <h2 className="mx-auto mt-8 max-w-4xl text-4xl font-extrabold leading-tight md:text-6xl">
           Take Control of Your{" "}
-          <span className="bg-gradient-to-r from-cyan-200 via-white to-yellow-200 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-cyan-200 via-white to-yellow-200 bg-clip-text text-transparent">
             Finances with AI
           </span>
         </h2>

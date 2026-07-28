@@ -54,7 +54,7 @@ export const updateBudgetService = async (
       amount,
     },
     {
-      new: true,
+      returnDocument: "after",
     },
   );
 

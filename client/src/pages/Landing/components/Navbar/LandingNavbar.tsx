@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Wallet, ArrowRight } from "lucide-react";
+import { Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const NAV_ITEMS = [
@@ -50,7 +50,7 @@ function LandingNavbar() {
         }
       `}
     >
-      <div className="flex h-[82px] w-full items-center justify-between px-8 lg:px-16">
+      <div className="flex h-82px w-full items-center justify-between px-8 lg:px-16">
         {/* Logo */}
 
         <Link to="/" className="group flex items-center gap-3">
@@ -69,7 +69,7 @@ function LandingNavbar() {
               items-center
               justify-center
               rounded-2xl
-              bg-gradient-to-br
+              bg-linear-to-br
               from-blue-600
               via-cyan-500
               to-violet-500
@@ -148,7 +148,7 @@ function LandingNavbar() {
       items-center
       justify-center
       rounded-2xl
-      bg-gradient-to-r
+      bg-linear-to-r
       from-blue-600
       via-cyan-500
       to-violet-500
@@ -183,7 +183,7 @@ function LandingNavbar() {
     items-center
     gap-2
     rounded-2xl
-    bg-gradient-to-r
+    bg-linear-to-r
     from-blue-600
     via-cyan-500
     to-violet-500

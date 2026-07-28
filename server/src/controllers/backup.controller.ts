@@ -1,6 +1,6 @@
 import type { Response } from "express";
 
-import type { AuthRequest } from "../middleware/auth.middleware.js";
+import type { AuthRequest } from "../types/auth.types.js";
 
 import { exportBackup } from "../services/backup.service.js";
 

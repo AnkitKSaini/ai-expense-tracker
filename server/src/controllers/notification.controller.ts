@@ -1,6 +1,6 @@
 import type { Response } from "express";
 
-import type { AuthRequest } from "../middleware/auth.middleware.js";
+import type { AuthRequest } from "../types/auth.types.js";
 
 import {
   getNotifications,
@@ -48,7 +48,7 @@ export async function markReadController(
 
   const notification =
     await markAsRead(
-      req.params.id,
+      String(req.params.id),
       req.user.id,
     );
 
@@ -88,7 +88,7 @@ export async function deleteNotificationController(
   }
 
   await deleteNotification(
-    req.params.id,
+    String(req.params.id),
     req.user.id,
   );
 

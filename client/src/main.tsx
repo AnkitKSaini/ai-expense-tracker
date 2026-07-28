@@ -15,6 +15,10 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 1000 * 30,
       refetchOnWindowFocus: false,
+      retry: 1,
+    },
+    mutations: {
+      retry: 1,
     },
   },
 });
@@ -25,12 +29,20 @@ createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
-            <Toaster position="top-right" />
             <App />
+
             <Toaster
               position="top-right"
+              reverseOrder={false}
+              gutter={8}
               toastOptions={{
                 duration: 3000,
+                success: {
+                  duration: 2500,
+                },
+                error: {
+                  duration: 4000,
+                },
               }}
             />
           </AuthProvider>

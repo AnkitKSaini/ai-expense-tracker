@@ -9,21 +9,21 @@ import {
 } from "react";
 
 import api from "../api/api";
+
 import type { ApiResponse } from "../types/api";
+import type { AuthResponse, User } from "../types/auth";
 
-import type { User } from "../types/auth";
-
-import { getToken, removeToken } from "../utils/token";
+import {
+  saveToken,
+  removeToken,
+} from "../utils/token";
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   isAuthenticated: boolean;
-
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
-
   checkAuth: () => Promise<void>;
-
   logout: () => Promise<void>;
 }
 
@@ -35,21 +35,23 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
-
   const [loading, setLoading] = useState(true);
 
   const checkAuth = useCallback(async () => {
     setLoading(true);
 
     try {
-      const token = getToken();
+      // Always refresh first
+      const refreshRes =
+        await api.post<ApiResponse<AuthResponse>>(
+          "/auth/refresh-token",
+        );
 
-      if (!token) {
-        setUser(null);
-        return;
-      }
+      saveToken(refreshRes.data.data.accessToken);
 
-      const res = await api.get<ApiResponse<User>>("/auth/me");
+      const res =
+        await api.get<ApiResponse<User>>("/auth/me");
+
       setUser(res.data.data);
     } catch {
       removeToken();
@@ -60,7 +62,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   useEffect(() => {
-    checkAuth();
+    void checkAuth();
   }, [checkAuth]);
 
   const logout = useCallback(async () => {
@@ -80,24 +82,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
       user,
       loading,
       isAuthenticated: !!user,
-
       setUser,
-
       checkAuth,
-
       logout,
     }),
     [user, loading, checkAuth, logout],
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuthContext() {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error("useAuthContext must be used inside AuthProvider");
+    throw new Error(
+      "useAuthContext must be used inside AuthProvider",
+    );
   }
 
   return context;

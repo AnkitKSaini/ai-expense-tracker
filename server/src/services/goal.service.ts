@@ -40,7 +40,7 @@ export const updateGoalService = async (
     },
     data,
     {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     },
   );

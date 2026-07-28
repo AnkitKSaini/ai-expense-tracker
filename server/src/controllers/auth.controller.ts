@@ -42,7 +42,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const logout = asyncHandler(async (req: AuthRequest, res: Response) => {
-  await logoutService(req.user.id);
+  await logoutService(req.user!.id);
 
   clearRefreshTokenCookie(res);
 
@@ -50,11 +50,10 @@ export const logout = asyncHandler(async (req: AuthRequest, res: Response) => {
 });
 
 export const me = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const user = await getCurrentUser(req.user.id);
+  const user = await getCurrentUser(req.user!.id);
 
   res.status(200).json(new ApiResponse(true, "Current user", user));
 });
-
 export const refreshToken = asyncHandler(
   async (req: Request, res: Response) => {
     const token = req.cookies.refreshToken;

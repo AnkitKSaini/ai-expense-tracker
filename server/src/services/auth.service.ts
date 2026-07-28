@@ -62,22 +62,17 @@ export const registerService = async (
 };
 
 export const loginService = async (data: LoginDto): Promise<AuthResponse> => {
-  console.log("Login Start");
 
   const user = await User.findOne({
     email: data.email,
   });
-  console.log("User:", user);
 
   if (!user) {
-    console.log("User Not Found");
 
     throw new ApiError(HTTP_STATUS.UNAUTHORIZED, "Invalid email or password");
   }
-  console.log("Password Check");
 
   const isMatch = await bcrypt.compare(data.password, user.password);
-  console.log("Compare Done");
 
   if (!isMatch) {
     throw new ApiError(HTTP_STATUS.UNAUTHORIZED, "Invalid email or password");

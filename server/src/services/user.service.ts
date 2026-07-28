@@ -13,7 +13,7 @@ export const updateProfileService = async (
   },
 ) => {
   return User.findByIdAndUpdate(userId, data, {
-    new: true,
+    returnDocument: "after",
   }).select("-password");
 };
 

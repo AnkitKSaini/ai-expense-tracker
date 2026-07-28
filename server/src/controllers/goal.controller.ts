@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import type { AuthRequest } from "../middleware/auth.middleware.js";
+import type { AuthRequest } from "../types/auth.types.js";
 
 import asyncHandler from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -32,7 +32,7 @@ export const getGoals = asyncHandler(
 
 export const updateGoal = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const goal = await updateGoalService(req.params.id, req.user!.id, req.body);
+    const goal = await updateGoalService(String(req.params.id), req.user!.id, req.body);
 
     res.json(new ApiResponse(true, "Goal updated successfully", goal));
   },
@@ -40,7 +40,7 @@ export const updateGoal = asyncHandler(
 
 export const deleteGoal = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    await deleteGoalService(req.params.id, req.user!.id);
+    await deleteGoalService(String(req.params.id), req.user!.id);
 
     res.json(new ApiResponse(true, "Goal deleted successfully"));
   },

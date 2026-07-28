@@ -127,7 +127,7 @@ export const updateExpenseService = async (
     },
     data,
     {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     },
   );

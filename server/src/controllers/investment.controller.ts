@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import type { AuthRequest } from "../middleware/auth.middleware.js";
+import type { AuthRequest } from "../types/auth.types.js";
 
 import asyncHandler from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -64,7 +64,7 @@ export const getInvestmentById = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const investment =
       await getInvestmentByIdService(
-        req.params.id!,
+        String(req.params.id!),
         req.user!.id,
       );
 
@@ -86,7 +86,7 @@ export const updateInvestment = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const investment =
       await updateInvestmentService(
-        req.params.id!,
+        String(req.params.id!) ,
         req.user!.id,
         req.body,
       );
@@ -108,7 +108,7 @@ export const updateInvestment = asyncHandler(
 export const deleteInvestment = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     await deleteInvestmentService(
-      req.params.id!,
+      String(req.params.id!),
       req.user!.id,
     );
 

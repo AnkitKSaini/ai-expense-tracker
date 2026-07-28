@@ -132,7 +132,7 @@ export const updateInvestmentService = async (
       },
       data,
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true,
       },
     );

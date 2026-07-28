@@ -3,8 +3,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 
-import { expenseSchema, type ExpenseFormData } from "./expense.schema";
+import {
+  expenseSchema,
+  type ExpenseFormData,
+} from "./expense.schema";
+
 import { useExpenses } from "../../hooks/useExpenses";
+
+import type { CreateExpenseDto } from "../../types/expense";
 
 function ExpenseForm() {
   const { createExpense } = useExpenses();
@@ -27,11 +33,21 @@ function ExpenseForm() {
     try {
       setLoading(true);
 
-      await createExpense(data);
+      const payload: CreateExpenseDto = {
+        title: data.title,
+        amount: data.amount,
+        category: data.category,
+        type: data.type,
+        date: data.date,
+      };
+
+      await createExpense(payload);
 
       toast.success("Expense added successfully");
 
-      reset();
+      reset({
+        type: "Expense",
+      });
     } catch (error) {
       toast.error("Failed to add expense");
       console.error(error);
@@ -56,13 +72,16 @@ function ExpenseForm() {
 
       <input
         type="number"
-        {...register("amount")}
+        {...register("amount", { valueAsNumber: true })}
         placeholder="Amount"
         className="w-full rounded border p-3"
       />
       <p className="text-sm text-red-500">{errors.amount?.message}</p>
 
-      <select {...register("category")} className="w-full rounded border p-3">
+      <select
+        {...register("category")}
+        className="w-full rounded border p-3"
+      >
         <option value="">Select Category</option>
         <option value="Food">Food</option>
         <option value="Transport">Transport</option>
@@ -75,7 +94,10 @@ function ExpenseForm() {
       </select>
       <p className="text-sm text-red-500">{errors.category?.message}</p>
 
-      <select {...register("type")} className="w-full rounded border p-3">
+      <select
+        {...register("type")}
+        className="w-full rounded border p-3"
+      >
         <option value="Expense">Expense</option>
         <option value="Income">Income</option>
       </select>

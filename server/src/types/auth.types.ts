@@ -1,10 +1,9 @@
 import type { Request } from "express";
-import type { HydratedDocument } from "mongoose";
-
-import type { IUser } from "../models/User.js";
 
 export interface AuthRequest extends Request {
-  user: HydratedDocument<IUser>;
+  user?: {
+    id: string;
+  };
 }
 
 export interface RegisterDto {

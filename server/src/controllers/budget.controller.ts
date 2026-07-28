@@ -3,7 +3,7 @@ import type { Response } from "express";
 import asyncHandler from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { HTTP_STATUS } from "../constants/httpStatus.js";
-import type { AuthRequest } from "../middleware/auth.middleware.js";
+import type { AuthRequest } from "../types/auth.types.js";
 
 import { createBudgetService } from "../services/budget.service.js";
 
@@ -39,8 +39,8 @@ export const getBudget = asyncHandler(
 
 export const updateBudget = asyncHandler(
   async (req: AuthRequest, res: Response): Promise<void> => {
-    const budget = await updateBudgetService(
-      req.params.id,
+    const budget = await updateBudgetService(String(
+      req.params.id),
       req.body.amount,
       req.user!.id,
     );
@@ -51,7 +51,7 @@ export const updateBudget = asyncHandler(
 
 export const deleteBudget = asyncHandler(
   async (req: AuthRequest, res: Response): Promise<void> => {
-    await deleteBudgetService(req.params.id, req.user!.id);
+    await deleteBudgetService(String(req.params.id), req.user!.id);
 
     res.json(new ApiResponse(true, "Budget deleted successfully"));
   },

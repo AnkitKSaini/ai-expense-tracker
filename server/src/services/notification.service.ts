@@ -41,7 +41,7 @@ export async function markAsRead(
       isRead: true,
     },
     {
-      new: true,
+      returnDocument: "after",
     },
   );
 }

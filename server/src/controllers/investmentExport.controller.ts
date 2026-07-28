@@ -3,7 +3,7 @@ import type { Response } from "express";
 import Investment from "../models/Investment.js";
 import User from "../models/User.js";
 
-import type { AuthRequest } from "../middleware/auth.middleware.js";
+import type { AuthRequest } from "../types/auth.types.js";
 
 import { exportPortfolioPDF } from "../services/investment/investmentExport.service.js";
 
