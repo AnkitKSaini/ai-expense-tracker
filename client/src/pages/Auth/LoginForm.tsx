@@ -49,6 +49,7 @@ function LoginForm() {
         <input
           type="email"
           placeholder="Email"
+          autoComplete="email"
           {...register("email")}
           className="w-full rounded-lg border p-3"
         />
@@ -64,6 +65,7 @@ function LoginForm() {
         <input
           type="password"
           placeholder="Password"
+          autoComplete="current-password"
           {...register("password")}
           className="w-full rounded-lg border p-3"
         />

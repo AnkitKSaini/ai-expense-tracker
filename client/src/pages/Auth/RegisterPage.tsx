@@ -32,13 +32,9 @@ function RegisterPage() {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (
-    data: RegisterFormData,
-  ) => {
+  const onSubmit = async (data: RegisterFormData) => {
     try {
-      await registerMutation.mutateAsync(
-        data,
-      );
+      await registerMutation.mutateAsync(data);
 
       navigate("/dashboard", {
         replace: true,
@@ -59,6 +55,7 @@ function RegisterPage() {
       />
 
       <form
+        autoComplete="on"
         onSubmit={handleSubmit(onSubmit)}
         className="mt-8 space-y-6"
       >
@@ -80,6 +77,7 @@ function RegisterPage() {
             <input
               id="name"
               type="text"
+              autoComplete="name"
               placeholder="Enter your full name"
               {...register("name")}
               className="
@@ -103,9 +101,7 @@ function RegisterPage() {
           </div>
 
           {errors.name && (
-            <p className="mt-2 text-sm text-red-500">
-              {errors.name.message}
-            </p>
+            <p className="mt-2 text-sm text-red-500">{errors.name.message}</p>
           )}
         </div>
 
@@ -127,6 +123,7 @@ function RegisterPage() {
             <input
               id="email"
               type="email"
+              autoComplete="email"
               placeholder="Enter your email"
               {...register("email")}
               className="
@@ -150,9 +147,7 @@ function RegisterPage() {
           </div>
 
           {errors.email && (
-            <p className="mt-2 text-sm text-red-500">
-              {errors.email.message}
-            </p>
+            <p className="mt-2 text-sm text-red-500">{errors.email.message}</p>
           )}
         </div>
 
@@ -160,6 +155,7 @@ function RegisterPage() {
         <PasswordInput
           label="Password"
           placeholder="Create a password"
+          autoComplete="new-password"
           registration={register("password")}
           error={errors.password}
         />
@@ -170,6 +166,7 @@ function RegisterPage() {
           name="confirmPassword"
           label="Confirm Password"
           placeholder="Confirm your password"
+          autoComplete="new-password"
           registration={register("confirmPassword")}
           error={errors.confirmPassword}
         />

@@ -57,6 +57,7 @@ const PasswordInput = forwardRef<
             id={id}
             type={showPassword ? "text" : "password"}
             placeholder={placeholder}
+            autoComplete={props.autoComplete}
             {...registration}
             {...props}
             className={`
