@@ -10,7 +10,7 @@ import errorMiddleware from "./middleware/error.middleware.js";
 import { env } from "./config/env.js";
 
 const app = express();
-
+app.set("trust proxy", 1);
 // CORS
 app.use(
   cors({
