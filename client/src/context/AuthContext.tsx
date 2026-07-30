@@ -16,6 +16,7 @@ import type { AuthResponse, User } from "../types/auth";
 import {
   saveToken,
   removeToken,
+  getToken,
 } from "../utils/token";
 
 interface AuthContextType {
@@ -33,15 +34,24 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-export function AuthProvider({ children }: AuthProviderProps) {
+export function AuthProvider({
+  children,
+}: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   const checkAuth = useCallback(async () => {
+    const token = getToken();
+
+    if (!token) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
 
     try {
-      // Always refresh first
       const refreshRes =
         await api.post<ApiResponse<AuthResponse>>(
           "/auth/refresh-token",
@@ -50,7 +60,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       saveToken(refreshRes.data.data.accessToken);
 
       const res =
-        await api.get<ApiResponse<User>>("/auth/me");
+        await api.get<ApiResponse<User>>(
+          "/auth/me",
+        );
 
       setUser(res.data.data);
     } catch {
@@ -68,8 +80,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const logout = useCallback(async () => {
     try {
       await api.post("/auth/logout");
-    } catch {
-      // Ignore logout API errors
+    } catch (error) {
+      console.error(
+        "Logout API Error:",
+        error,
+      );
     } finally {
       removeToken();
       setUser(null);

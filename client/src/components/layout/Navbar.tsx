@@ -15,12 +15,13 @@ function Navbar({ onMenuClick }: NavbarProps) {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login", {
-      replace: true,
-    });
-  };
+  const handleLogout = async () => {
+  await logout();
+
+  navigate("/login", {
+    replace: true,
+  });
+};
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white/80 px-6 backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/80">
