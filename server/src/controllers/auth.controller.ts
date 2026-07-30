@@ -56,7 +56,13 @@ export const me = asyncHandler(async (req: AuthRequest, res: Response) => {
 });
 export const refreshToken = asyncHandler(
   async (req: Request, res: Response) => {
+    console.log("=== REFRESH TOKEN DEBUG ===");
+    console.log("Cookies:", req.cookies);
+    console.log("Header Cookie:", req.headers.cookie);
+
     const token = req.cookies.refreshToken;
+
+    console.log("Extracted Refresh Token:", token ? "Present" : "Missing");
 
     const result = await refreshTokenService(token);
 
