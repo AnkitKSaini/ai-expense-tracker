@@ -1,87 +1,97 @@
 import { z } from "zod";
 
-/* ---------------- Login ---------------- */
-
-export const loginSchema = z.object({
-  email: z.string().trim().email("Invalid email address"),
-  password: z
-    .string()
-    .min(6, "Password must be at least 6 characters"),
-});
-
-export type LoginFormData = z.infer<typeof loginSchema>;
-
-/* ---------------- Register ---------------- */
-
 export const registerSchema = z
   .object({
     name: z
       .string()
-      .trim()
-      .min(2, "Name must be at least 2 characters"),
+      .min(3, "Name must be at least 3 characters"),
 
-    email: z.string().trim().email("Invalid email address"),
+    email: z
+      .string()
+      .email("Invalid email address"),
 
     password: z
       .string()
-      .min(6, "Password must be at least 6 characters"),
+      .min(
+        8,
+        "Password must be at least 8 characters",
+      ),
 
     confirmPassword: z.string(),
   })
   .refine(
-    (data) => data.password === data.confirmPassword,
+    (data) =>
+      data.password === data.confirmPassword,
     {
-      message: "Passwords do not match",
       path: ["confirmPassword"],
+      message: "Passwords do not match",
     },
   );
 
-export type RegisterFormData = z.infer<typeof registerSchema>;
+export const loginSchema = z.object({
+  email: z
+    .string()
+    .email("Invalid email"),
 
-/* ---------------- Forgot Password ---------------- */
-
-export const forgotPasswordSchema = z.object({
-  email: z.string().trim().email("Invalid email address"),
+  password: z
+    .string()
+    .min(1, "Password is required"),
 });
 
-export type ForgotPasswordFormData = z.infer<
-  typeof forgotPasswordSchema
->;
-
-/* ---------------- Verify OTP ---------------- */
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .email("Invalid email address"),
+});
 
 export const verifyOTPSchema = z.object({
-  email: z.string().trim().email("Invalid email address"),
+  email: z
+    .string()
+    .email("Invalid email address"),
 
   otp: z
     .string()
-    .trim()
-    .length(6, "OTP must be 6 digits")
-    .regex(/^\d+$/, "OTP must contain only numbers"),
+    .length(
+      6,
+      "OTP must be 6 digits",
+    )
+    .regex(
+      /^\d+$/,
+      "OTP must contain only numbers",
+    ),
 });
-
-export type VerifyOTPFormData = z.infer<
-  typeof verifyOTPSchema
->;
-
-/* ---------------- Reset Password ---------------- */
 
 export const resetPasswordSchema = z
   .object({
     password: z
       .string()
-      .min(6, "Password must be at least 6 characters"),
+      .min(
+        8,
+        "Password must be at least 8 characters",
+      ),
 
     confirmPassword: z.string(),
   })
   .refine(
-    (data) => data.password === data.confirmPassword,
+    (data) =>
+      data.password === data.confirmPassword,
     {
-      message: "Passwords do not match",
       path: ["confirmPassword"],
+      message: "Passwords do not match",
     },
   );
 
-export type ResetPasswordFormData = z.infer<
-  typeof resetPasswordSchema
->;
+export type RegisterFormData =
+  z.infer<typeof registerSchema>;
+
+export type LoginFormData =
+  z.infer<typeof loginSchema>;
+
+export type ForgotPasswordFormData =
+  z.infer<typeof forgotPasswordSchema>;
+
+export type VerifyOTPFormData =
+  z.infer<typeof verifyOTPSchema>;
+
+export type ResetPasswordFormData =
+  z.infer<typeof resetPasswordSchema>;
