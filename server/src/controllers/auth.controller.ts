@@ -38,7 +38,11 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 
   setRefreshTokenCookie(res, result.refreshToken);
 
-  res.status(200).json(new ApiResponse(true, "Login successful", result));
+  console.log("Refresh cookie sent.");
+
+  res
+    .status(200)
+    .json(new ApiResponse(true, "Login successful", result));
 });
 
 export const logout = asyncHandler(async (req: AuthRequest, res: Response) => {
