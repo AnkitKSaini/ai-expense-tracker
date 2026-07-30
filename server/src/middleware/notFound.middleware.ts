@@ -1,9 +1,15 @@
-import type { Request, Response } from "express";
+import type { Request, Response, NextFunction } from "express";
 
 const notFoundMiddleware = (
-  _req: Request,
-  res: Response
-): void => {
+  req: Request,
+  res: Response,
+  _next: NextFunction,
+) => {
+  console.log("========== 404 ==========");
+  console.log("Method:", req.method);
+  console.log("URL:", req.originalUrl);
+  console.log("=========================");
+
   res.status(404).json({
     success: false,
     message: "Route Not Found",
